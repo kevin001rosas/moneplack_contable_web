@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint: Multi-Level Menu</title>
+    <meta name="description" content="Blueprint: A basic template for a responsive multi-level menu" />
+    <meta name="keywords" content="blueprint, template, html, css, menu, responsive, mobile-friendly" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="../../js/popper.js?001"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+    <!--Íconos-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Cargamos los estilos -->
+    <link rel="stylesheet" type="text/css" href="../../css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/component.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/estilos.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/croppie.css" />
+    <link rel="stylesheet" href="../../css/bootstrap-select.css">
+
+    <!--Cargamos las utilidades y las librerías de Cookies, PDF y bootstrap Select-->
+    <script src="../../js/utilidades.js?001"></script>
+    <script src="../../js/cookie.js?001"></script>
+    <script src="../../js/pdfobject.min.js?001"></script>
+    <script src="../../js/bootstrap-select.js?002"></script>
+    <script src="../../js/croppie.js?001"></script>
+    <script src="../../js/modernizr-custom.js?001"></script>
+
+</head>
+
+<body>
+    <!-- Main container -->
+    <div class="container-fluid">
+        <div id="menu">
+        </div>
+        <div class="content">
+            <div id="contenido_de_la_pagina" class="container-fluid">
+                <div class="row" style="padding-top: 30px;">
+                    <div class="col-12 col-xl-12 form-group">
+                        <div class="row div_row_tarjeta">
+                            <div class="col-12 div_tarjeta_arriba_encabezado">
+                                Datos de Usuario
+                            </div>
+                            <div class="col-12 div_tarjeta_abajo_contenido">
+                                <div class="row tamanio_letra_estandar">
+                                    <div class="col-12 col-xl-6">
+                                        <div class="row" style="height: 100%;padding-top: 15px;padding-bottom: 15px;">
+                                            <div class="col-12" style="margin: auto;">
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Usuario:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Usuario</div>
+                                                    <div class="col-12 col-lg-8">
+                                                        <input type="text" id="nombre_de_usuario" class="form-control" placeholder="nombre_de_usuario" />
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Contraseña:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Contraseña:</div>
+                                                    <div class="col-12 col-lg-8">
+                                                        <input type="password" id="secret" class="form-control" placeholder="secret" />
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">email:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">email:</div>
+                                                    <div class="col-12 col-lg-8">
+                                                        <input type="text" id="email" class="form-control" placeholder="email" />
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group" style="">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Tipo de Usuario:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Tipo de Usuario:</div>
+                                                    <div class="col-12 col-lg-8">
+                                                        <select id="id_tipo_de_usuario" class="form-control selectpicker" placeholder="Tipo de Usuario">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                    
+                                                <div class="row">
+                                                    <div id="errores" style="display: none; text-align: center;" class="col-12 tamanio_letra_errores form-group">Errores</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-xl-6">
+                                        <!--aqui va  la fila de la foto-->
+                                        <div class="row" style="height: 100%;">
+                                            <div class="col-12" style="margin: auto; text-align: center;">
+                                                <div class="button_imagen" style="border-radius: 50%; margin:auto;width: 10vw;height:10vw; overflow: hidden; text-align: center;">
+                                                    <img onclick="seleccionar_imagen();" id="foto_url" class="" src='data:image/jpeg;base64,' style='cursor: pointer;height:auto; width: 100%;margin-top: -1vw;' />
+                                                </div>
+                                            </div>
+                                        </div>
+                                            
+     
+                                    </div>
+                                </div>
+
+                                <div class="row form-group" >      
+                            <div class="col-12 col-xl-6">   </div>                                                                             
+                                    <div class="col-12 col-xl-6 btn_rectangle" onclick="actualizar()">Guardar Cambios</div>
+                                    
+                                </div>
+     
+                                  
+
+                            </div>
+                        </div>
+
+                        <div style="padding: 10px;"></div>
+
+                        <!--comienza trajeta 2-->
+                        <div class="row div_row_tarjeta">
+                            <div class="col-12 div_tarjeta_arriba_encabezado">
+                                Datos Generales de usuario
+                            </div>
+                            <div class="col-12 div_tarjeta_abajo_contenido">
+                                <div class="row tamanio_letra_estandar">
+                                    <div class="col-12 col-xl-6">
+                                        <div class="row" style="height: 100%;padding-top: 15px;padding-bottom: 15px;">
+                                            <div class="col-12" style="margin: auto;">
+
+                                                <!--div de CHECADO-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Nombres:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Nombres:</div>
+                                                    <div class="col-12 col-lg-8 label_campo" >
+                                                       <div id="nombres">Nombres</div>
+                                                    </div>
+                                                </div>
+                                                <!--APELLIDO PATERNO-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Apellido Paterno:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Apellido Paterno:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                       <div id="apellido_paterno">Apellido Paterno</div>
+                                                    </div>
+                                                </div>
+                                                <!--APELLIDO MATERNO-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Apellido Materno:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Apellido Materno:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                        <div id="apellido_materno">Apellido Materno</div>
+                                                    </div>
+                                                </div>
+                                                <!--DIV QUE SE AGREGA DEPARTAMENTO-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Departamento:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Departamento:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                       <div id="DEPARTAMENTO">Departamento</div>
+                                                    </div>
+                                                </div>
+                                                <!--DIV QUE SE AGREGA AREA-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Área:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Área:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                      <div id="AREA">Área</div>
+                                                    </div>
+                                                </div>
+                                                <!--DIV QUE SE AGREGA borrado-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Estado:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Estado:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                        <div id="BORRADO">Estado</div>
+                                                    </div>
+
+                                                </div>
+                                                <!--DIV QUE SE AGREGA CLAVE DE EMPLEADO -->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Clave empleado:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Clave empleado:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                        <div id="CLAVE_EMPLEADO">Clave de empleado</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-xl-6">
+
+                                        <div class="row" style="height: 100%;">
+                                            <div class="col-12" style="margin: auto; ">
+                                                <!--DIV QUE SE AGREGA CURP-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">CURP:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">CURP:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                        <div id="CURP">CURP</div>
+                                                    </div>
+                                                </div>
+                                                <!--DIV QUE SE AGREGA NSS-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">NSS:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">NSS:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                        <div id="NSS">NSS</div>
+                                                    </div>
+                                                </div>
+                                                <!--DIV QUE SE AGREGA RFC -->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">RFC:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">RFC:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                       <div id="RFC">RFC</div>
+                                                    </div>
+                                                </div>
+
+                                                <!--DIV QUE SE AGREGA FECHA_REGISTRO-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Registro:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Registro:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                       <div id="FECHA_REGISTRO">Fecha de registro</div>
+                                                    </div>
+                                                </div>
+                                                <!--DIV QUE SE AGREGA FECHA_MODIFICACION-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Modificación:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Modificación:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                        <div id="FECHA_MODIFICACION">Fecha de modificación</div>
+                                                    </div>
+                                                </div>
+                                                <!--DIV QUE SE AGREGA FECHA_INGRESO-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Ingreso:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Ingreso:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                        <div id="FECHA_INGRESO">Fecha de ingreso</div>
+                                                    </div>
+                                                </div>
+                                                <!--DIV QUE SE AGREGA FECHA_BAJA-->
+                                                <div class="row form-group">
+                                                    <div class="d-lg-none col-12 col-lg-4 label_campo" style="text-align: left;margin-bottom: 5px;">Fecha Baja:</div>
+                                                    <div class="d-none d-lg-block col-lg-4 label_campo" style="text-align: right;">Fecha Baja:</div>
+                                                    <div class="col-12 col-lg-8 label_campo">
+                                                        <div id="FECHA_BAJA">Fecha de baja</div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                               
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- /view -->
+    <script src="../../js/cargar_menu.js?001"></script>
+    <script src="../../js/classie.js?001"></script>
+    <script src="../../js/main.js?001"></script>
+    <script src="../../js/menu.js?001"></script>
+    <script>
+        var usuario = {};
+        $(document).ready(function() {
+            //Ponemos el menú activo actual. 
+            $("#button_usuarios").addClass("menu__link--current");
+            llenar_comboboxes();
+            llenar_formulario();
+            quitar_loading();
+        });
+
+        function llenar_formulario() {
+            contador_solicitudes++;
+            //Obtenemos los datos del usuario y los ponemos en la interfaz.
+            //Obtenemos la información del id.
+            var id = getIdFromURL();
+
+            var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/usuarios/get/${id}`,
+                "method": "GET",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "cache-control": "no-cache",
+                    "token": `${Cookies.get('token')}`,
+                    "id_usuario": `${Cookies.get('id_usuario')}`,
+                    "id_tipo_de_usuario": `${Cookies.get('id_tipo_de_usuario')}`
+                },
+                "processData": false,
+                success: function(data) {
+                    if (data == "incorrecto") {
+                        //mandar_a_perfil(); 
+                        return;
+                    }
+                    console.log(data);
+                 
+
+                    //Parseamos la información. 
+                    var obj = JSON.parse(data);
+                    //console.log(obj); 
+
+                    //Guardamos el objeto de mascota. 
+                    usuario.nombre_de_usuario = obj[0]["nombre_de_usuario"];
+                    usuario.apellido_paterno = obj[0]["APATERNO"];
+                    usuario.apellido_materno = obj[0]["AMATERNO"];
+                    usuario.nombres = obj[0]["NOMBRE"];
+                    usuario.secret = obj[0]["secret"];
+                    usuario.email = obj[0]["email"];
+                    usuario.id_tipo_de_usuario = obj[0]["id_tipo_de_usuario"];
+                    usuario.foto_url = obj[0]["foto_url"];
+
+                    usuario.FECHA_REGISTRO = obj[0]["FECHA_REGISTRO"];
+                    usuario.FECHA_MODIFICACION = obj[0]["FECHA_MODIFICACION"];
+                    usuario.CLAVE_EMPLEADO = obj[0]["CLAVE_EMPLEADO"];
+                    usuario.NSS = obj[0]["NSS"];
+                    usuario.RFC = obj[0]["RFC"];
+                    usuario.CURP = obj[0]["CURP"];
+                    usuario.AREA = obj[0]["AREA"];
+                    usuario.DEPARTAMENTO = obj[0]["DEPARTAMENTO"];
+                    usuario.FECHA_INGRESO = obj[0]["FECHA_INGRESO"];
+                    usuario.FECHA_BAJA = obj[0]["FECHA_BAJA"];
+                    usuario.BORRADO = obj[0]["BORRADO"];
+
+                    //Fijamos el nombre de la raza. 
+                    $("#nombre_de_usuario").val(obj[0]["nombre_de_usuario"]);
+                    $("#apellido_paterno").html(obj[0]["APATERNO"]);
+                    $("#apellido_materno").html(obj[0]["AMATERNO"]);
+                    $("#nombres").html(obj[0]["NOMBRE"]);
+                    $("#secret").val(obj[0]["secret"]);
+                    $("#email").val(obj[0]["email"]);
+
+                    $("#FECHA_REGISTRO").html(obj[0]["FECHA_REGISTRO"]);
+                    $("#FECHA_MODIFICACION").html(obj[0]["FECHA_MODIFICACION"]);
+                    $("#CLAVE_EMPLEADO").html(obj[0]["CLAVE_EMPLEADO"]);
+                    $("#NSS").html(obj[0]["NSS"]);
+                    $("#RFC").html(obj[0]["RFC"]);
+                    $("#CURP").html(obj[0]["CURP"]);
+                    $("#AREA").html(obj[0]["AREA"]);
+                    $("#DEPARTAMENTO").html(obj[0]["DEPARTAMENTO"]);
+                    $("#FECHA_INGRESO").html(obj[0]["FECHA_INGRESO"]);
+                    $("#FECHA_BAJA").html(obj[0]["FECHA_BAJA"]);
+
+                    $("#BORRADO").html(obj[0]["BORRADO"]);
+
+                    //Actualizamos el tipo de usuario.
+                    $('#id_tipo_de_usuario').selectpicker('val', obj[0]["id_tipo_de_usuario"]);
+                    $("#id_tipo_de_usuario").selectpicker('refresh');
+                   
+
+                    $("#foto_url").attr('onerror', `this.src='${default_image_url}';`);                    
+                    $("#foto_url").attr('src', obj[0]["foto_url"]);
+
+                },
+                error: function() {
+                    //Volvemos a invocar la función. 
+                    if (contador_solicitudes < cantidad_maxima_solicitudes)
+                        llenar_formulario();
+                }
+            }
+
+            $.ajax(settings);
+        }
+
+        function llenar_comboboxes() {
+            llenar_tipos_de_usuario();
+        }
+
+        function llenar_tipos_de_usuario() {
+            contador_solicitudes++;
+            var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/tiposdeusuario`,
+                "method": "GET",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "cache-control": "no-cache",
+                    "token": `${Cookies.get('token')}`                    
+                },
+                "processData": false,
+                success: function(data) {
+                    ////console.log(data); 
+                    //Parseamos la información. 
+                    var obj = JSON.parse(data);
+
+                    //Limpiamos el contenido actual 
+                    $("#id_tipo_de_usuario").html("");
+                    var nuevo_contenido = "";
+
+                    //Llenamos las nuevas opciones. 
+                    for (var x = 0; x < obj.length; x++) {
+                        var id = obj[x]["id"];
+                        var nombre = obj[x]["nombre"];
+                        nuevo_contenido += `<option value="${id}">${nombre}</option>`;
+                    }
+
+                    $("#id_tipo_de_usuario").html(nuevo_contenido);
+                    //Seleccinamos la primera opción
+                    $('#id_tipo_de_usuario').selectpicker('val', $("#id_tipo_de_usuario option:first").val());
+                    $("#id_tipo_de_usuario").selectpicker('refresh');
+                },
+                error: function(data) {
+                    //Volvemos a invocar la función. 
+                    if (contador_solicitudes < cantidad_maxima_solicitudes)
+                        llenar_tipos_de_usuario();
+                }
+            }
+
+            $.ajax(settings);
+        }
+
+        function actualizar() {
+
+            var usuarios={};
+
+            usuarios.nombre_de_usuario= $("#nombre_de_usuario").val();
+            usuarios.secret = $("#secret").val();
+            usuarios.email = $("#email").val();
+            usuarios.id_tipo_de_usuario = $("#id_tipo_de_usuario").val();
+            usuarios.foto_url = $("#foto_urlO").val();
+            console.log(usuarios);
+
+               var settings = {
+            "async": false,
+            "crossDomain": true,
+            "url": `${api_url}/usuarios/POST/${getIdFromURL()}`, 
+            "method": "POST",
+            "headers": {
+            "Content-Type": "application/json",
+            "cache-control": "no-cache",
+            "token": `${Cookies.get('token')}`, 
+            "id_usuario": `${Cookies.get('id_usuario')}`
+           },
+           "processData": false,
+           "data": JSON.stringify(usuarios)
+         }
+         $.ajax(settings).done(function (response) {
+           //Actualizamos el elemento de la raza en la interfaz.           
+           var registronuevo = $("#nombre_de_usuario").val();         
+           $("#nombre_de_usuario").val(registronuevo);    
+            var registronuevosecret = $("#secret").val();         
+           $("#secret").val(registronuevosecret);         
+           
+            var registronuevoemail = $("#email").val();         
+           $("#email").val(registronuevoemail);      
+           var registronuevotipousuario = $("#id_tipo_de_usuario").val();         
+           $("#id_tipo_de_usuario").val(registronuevotipousuario);         
+           var registronuevofoto = $("#foto_url").val();
+           $("#foto_url").val(registronuevofoto);
+           alert("Cambios guardados");
+           window.location.href="./ver_usuarios.html"; 
+
+           
+         });        
+
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint: Multi-Level Menu</title>
+    <meta name="description" content="Blueprint: A basic template for a responsive multi-level menu" />
+    <meta name="keywords" content="blueprint, template, html, css, menu, responsive, mobile-friendly" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="../../js/popper.js?001"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+    <!--Íconos-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Cargamos los estilos -->
+    <link rel="stylesheet" type="text/css" href="../../css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/component.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/estilos.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/croppie.css" />
+    <link rel="stylesheet" href="../../css/bootstrap-select.css">
+
+    <!--Cargamos las utilidades y las librerías de Cookies, PDF y bootstrap Select-->
+    <script src="../../js/utilidades.js?001"></script>
+    <script src="../../js/cookie.js?001"></script>
+    <script src="../../js/pdfobject.min.js?001"></script>
+    <script src="../../js/bootstrap-select.js?001"></script>
+    <script src="../../js/croppie.js?001"></script>
+    <script src="../../js/modernizr-custom.js?001"></script>
+
+</head>
+
+<body>
+    <!-- Main container -->
+    <div class="container-fluid">
+        <div id="menu">
+        </div>
+        <div class="content">
+            <div id="contenido_de_la_pagina" class="container-fluid">
+                <div class="row" style="padding-top: 30px;">
+                    <div class="col-12 col-xl-12 form-group">
+                        <div class="row div_row_tarjeta">
+                            <div class="col-12 div_tarjeta_arriba_encabezado">
+                                Datos de Usuario
+                            </div>
+                            <div class="col-12 div_tarjeta_abajo_contenido">
+                                <div class="row tamanio_letra_estandar">
+                                    <div class="col-12 form-group"></div>
+                                    <div class="col-12">
+                                        <div class="row form-group">
+                                            <div class="d-lg-none col-12 col-lg-3 label_campo" style="text-align: left;margin-bottom: 5px;">nombre_de_usuario:</div>
+                                            <div class="d-none d-lg-block col-lg-3 label_campo" style="text-align: right;">nombre_de_usuario:</div>
+                                            <div class="col-12 col-lg-9">
+                                                <input type="text" id="nombre_de_usuario" class="form-control" placeholder="nombre_de_usuario" />
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="d-lg-none col-12 col-lg-3 label_campo" style="text-align: left;margin-bottom: 5px;">apellido_paterno:</div>
+                                            <div class="d-none d-lg-block col-lg-3 label_campo" style="text-align: right;">apellido_paterno:</div>
+                                            <div class="col-12 col-lg-9">
+                                                <input type="text" id="apellido_paterno" class="form-control" placeholder="apellido_paterno" />
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="d-lg-none col-12 col-lg-3 label_campo" style="text-align: left;margin-bottom: 5px;">apellido_materno:</div>
+                                            <div class="d-none d-lg-block col-lg-3 label_campo" style="text-align: right;">apellido_materno:</div>
+                                            <div class="col-12 col-lg-9">
+                                                <input type="text" id="apellido_materno" class="form-control" placeholder="apellido_materno" />
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="d-lg-none col-12 col-lg-3 label_campo" style="text-align: left;margin-bottom: 5px;">nombres:</div>
+                                            <div class="d-none d-lg-block col-lg-3 label_campo" style="text-align: right;">nombres:</div>
+                                            <div class="col-12 col-lg-9">
+                                                <input type="text" id="nombres" class="form-control" placeholder="nombres" />
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="d-lg-none col-12 col-lg-3 label_campo" style="text-align: left;margin-bottom: 5px;">secret:</div>
+                                            <div class="d-none d-lg-block col-lg-3 label_campo" style="text-align: right;">secret:</div>
+                                            <div class="col-12 col-lg-9">
+                                                <input type="text" id="secret" class="form-control" placeholder="secret" />
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="d-lg-none col-12 col-lg-3 label_campo" style="text-align: left;margin-bottom: 5px;">email:</div>
+                                            <div class="d-none d-lg-block col-lg-3 label_campo" style="text-align: right;">email:</div>
+                                            <div class="col-12 col-lg-9">
+                                                <input type="text" id="email" class="form-control" placeholder="email" />
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="d-lg-none col-12 col-lg-3 label_campo" style="text-align: left;margin-bottom: 5px;">Tipo de Usuario:</div>
+                                            <div class="d-none d-lg-block col-lg-3 label_campo" style="text-align: right;">Tipo de Usuario:</div>
+                                            <div class="col-12 col-lg-9">
+                                                <select id="id_tipo_de_usuario" class="form-control selectpicker" placeholder="Tipo de Usuario">        
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div id="errores" style="display: none;" class="col-12 tamanio_letra_errores">Errores</div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-6 col-lg-8 col-xl-9"></div>
+                                            <div class="col-6 col-lg-4 col-xl-3 btn_rectangle" onclick="insertar()">Guardar Cambios</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /view -->
+    <script src="../../js/cargar_menu.js?001"></script>
+    <script src="../../js/classie.js?001"></script>
+    <script src="../../js/main.js?001"></script>
+    <script src="../../js/menu.js?001"></script>
+    <script>
+        $(document).ready(function() {
+            //Ponemos el menú activo actual. 
+            $("#button_usuarios").addClass("menu__link--current");
+            llenar_comboboxes();            
+            quitar_loading();
+        });
+
+        function llenar_comboboxes()
+        {
+          llenar_tipos_de_usuario(); 
+        }
+
+        function llenar_tipos_de_usuario()
+        {
+          contador_solicitudes++; 
+        var settings = {
+           "async": false,
+           "crossDomain": true,
+           "url": `${api_url}/tiposdeusuario`, 
+           "method": "GET",
+           "headers": {
+             "Content-Type": "application/json",
+             "cache-control": "no-cache",
+             "token": `${Cookies.get('token')}`, 
+             "id_usuario": `${Cookies.get('id_usuario')}`
+           },
+           "processData": false,              
+            success: function(data){    
+            ////console.log(data); 
+            //Parseamos la información. 
+             var obj = JSON.parse(data);        
+      
+             //Limpiamos el contenido actual 
+             $("#id_tipo_de_usuario").html("");
+             var nuevo_contenido = ""; 
+      
+             //Llenamos las nuevas opciones. 
+             for (var x =  0; x < obj.length; x++) 
+             {
+               var id = obj[x]["id"]; 
+               var nombre = obj[x]["nombre"];                
+               nuevo_contenido += `<option value="${id}">${nombre}</option>`; 
+             }
+      
+             $("#id_tipo_de_usuario").html(nuevo_contenido);   
+             //Seleccinamos la primera opción
+             $('#id_tipo_de_usuario').selectpicker('val', $("#id_tipo_de_usuario option:first").val());
+             $("#id_tipo_de_usuario").selectpicker('refresh'); 
+           }
+            , error: function(data) {
+               //Volvemos a invocar la función. 
+               if(contador_solicitudes<7)
+                llenar_tipos_de_usuario();                
+            }
+         }
+      
+         $.ajax(settings);
+        }        
+
+        function validacion()
+          {      
+        $("#errores").hide();
+        $('html,body').animate({
+                       scrollTop: $("#errores").offset().bottom},'slow');
+
+        if($("#nombre_de_usuario").val().trim()==="") 
+        {
+          $("#errores").html("Por favor, especifica un nombre de usuario."); 
+          $("#errores").show("slow");              
+          return false; 
+        }
+        if($("#apellido_paterno").val().trim()==="")
+        {
+          $("#errores").html("Por favor, especifica un apellido paterno para el usuario."); 
+          $("#errores").show("slow");              
+          return false; 
+        }
+        if($("#apellido_materno").val().trim()==="") 
+        {
+          $("#errores").html("Por favor, especifica un apellido materno para el usuario.");
+          $("#errores").show("slow");
+          return false;
+        }
+
+        if($("#nombres").val().trim()==="") 
+        {
+          $("#errores").html("Por favor, especifica los nombres para el usuario.");
+          $("#errores").show("slow");
+          return false;
+        }
+
+        if($("#secret").val().trim()==="") 
+        {
+          $("#errores").html("Por favor, especifica una contraseña para el usuario.");
+          $("#errores").show("slow");
+          return false;
+        }
+
+        if($("#email").val().trim()==="") 
+        {
+          $("#errores").html("Por favor, especifica un correo electrónico para el usuario.");
+          $("#errores").show("slow");
+          return false;
+        }
+
+        if(correo_valido($("#email").val())==false)
+        {
+          //Hacemos el append de los errores y mostramos los errores.
+          $("#errores").html("El correo electrónico no es válido."); 
+          $("#errores").show("slow");    
+          return false; 
+        }
+        
+        return true; 
+
+
+          }
+
+        function insertar()
+        {
+         if(validacion()==false)
+          return; 
+         //Modificamos la raza con Ajax. 
+         var form = {};
+
+          form.nombre_de_usuario = $("#nombre_de_usuario").val();
+          form.apellido_paterno = $("#apellido_paterno").val();
+          form.apellido_materno = $("#apellido_materno").val();
+          form.nombres = $("#nombres").val();
+          form.secret = $("#secret").val();
+          form.email = $("#email").val();
+          form.id_tipo_de_usuario = $("#id_tipo_de_usuario").val();
+
+          //console.log(form); 
+
+
+         var settings = {
+           "async": false,
+           "crossDomain": true,
+           "url": `${api_url}/usuarios/`, 
+           "method": "POST",
+           "headers": {
+             "Content-Type": "application/json",
+             "cache-control": "no-cache",
+             "token": `${Cookies.get('token')}`, 
+             "id_usuario": `${Cookies.get('id_usuario')}`
+           },
+           success: function(data)
+           {
+            //console.log(data); 
+            if(data==="incorrecto")
+            {
+              mostrar_errores("errores", "Ocurrió un error al solicitar los accesos. Por favor, inténtelo de nuevo o contacte a soporte técnico si el problema persiste.")              
+              return; 
+            }
+
+            //Mostramos el mensaje de éxito. 
+            $("#div_datos_de_solicitud").hide(); 
+            $("#div_completado").show("slow");             
+
+           }, 
+           error: function(data)
+           {
+              mostrar_errores("errores", "Ocurrió un error al solicitar los accesos. Por favor, inténtelo de nuevo o contacte a soporte técnico si el problema persiste.")              
+              return; 
+           }, 
+           "processData": false,
+           "data": JSON.stringify(form)
+         }
+      
+         $.ajax(settings); 
+      }
+    </script>
+</body>
+
+</html>

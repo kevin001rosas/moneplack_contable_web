@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      
+      <!-- Bootstrap CSS -->
+      
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+
+      <!-- jQuery library -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+      <!-- Popper JS -->
+      <script src="./js/popper.js?001"></script>
+
+      <!-- Latest compiled JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+      <title>Micrositio</title>
+      <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+
+      <!--Cargamos los íconos-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      
+
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+
+      <!-- Latest compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+
+      <script src="./js/utilidades.js?001"></script>  
+      <script src="./js/cookie.js?001"></script>
+      <script src="./js/pdfobject.min.js?001"></script>        
+      <script src="./js/bootstrap-select.js?001"></script>  
+      <script src="./js/croppie.js?001"></script>
+
+      <link rel="stylesheet" href="./css/estilos.css">
+      <div id="loading"></div>
+      <script>
+        $(document).ready(function() {
+          quitar_loading(); 
+                 
+        });
+
+        function preparar_recuperar_contraseña()
+        {
+          $("#div_recuperar_contrasenia").show('slow');
+          return; 
+        }
+
+        function recuperar_contrasenia()
+        {
+          $("#mensaje_contrasenia").hide();
+
+          if(correo_valido($("#email_restablecimiento").val())==false)
+          {
+            $("#mensaje_contrasenia").html("Por favor, especifica una dirección de correo válida.")            
+            $("#mensaje_contrasenia").show("slow");
+            return; 
+          }
+
+          //Solicitamos la contraseña por AJAX. 
+        var settings = {
+           "async": false,
+           "crossDomain": true,
+           "url": `${api_url}/usuarios/getSecret`, 
+           "method": "GET",
+           "headers": {
+             "Content-Type": "application/json",
+             "cache-control": "no-cache",
+             "email": `${$("#email_restablecimiento").val()}`
+           },
+           "processData": false,                      
+            success: function(data){    
+            
+             //Mostramos el mensaje del servidor en la interfaz. 
+             $("#email_restablecimiento").val("");
+             $("#email_restablecimiento").focus(); 
+             $("#mensaje_contrasenia").html(data);
+
+           }
+           , error: function(data)
+           {
+            $("#mensaje_contrasenia").html(data); 
+            return; 
+           }
+         }
+      
+         $.ajax(settings);          
+
+
+          $("#mensaje_contrasenia").show('slow');
+
+        }
+      </script>
+      
+   </head>
+   <style>
+   /*Estilo para poner el fondo con opacidad*/
+   body::before
+   {
+    background-image: url("./img/fondo_login.jpg");
+    background-size: cover;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    opacity: 0.8;
+   }
+  </style>
+   <body style='background-color: black;'>
+      <div class="container-fluid">
+         <div class="row" style="padding-top: 5vh;">           
+           <div class="col-12 d-none d-lg-block" style="margin-top: 20vh; position: absolute;height: 40vh;">
+              <div class="row" style="height: 100%;">
+                <div class="col-1"></div>
+                <div class="col-1 col-lg-5" style="background-color: rgba(255,255,255,.7);border-top-left-radius: 50px;border-bottom-left-radius: 50px;">                  
+                  <div class="row" style="height: 100%;">
+                    <div class="col-12" style="text-align: center;margin:auto;">    
+                    <div class="row">
+                      <div class="col-12 col-lg-6">
+                        <div class="row" style="height: 100%;"> 
+                          <div class="col-12" style="margin:auto;">
+                            <div class="row" style="margin:auto;">
+                              <div class="col-12">
+                                <img id="logoPMM" src='./img/pmm_logo.png' style='height: auto; width: 110%;'>
+                              </div>
+                            </div>
+                          </div>
+                        </div>                        
+                      </div>                                                        
+                      <div class="col-12 col-lg-6" style="font-size: 2.6vw;font-style: italic; font-weight:bold;color:#25327b" >
+                        <div class="row" style="height: 100%;"> 
+                          <div class="col-12" style="margin-top: auto;margin-bottom: auto;">
+                            <div class="row" style="margin-top:auto;margin-bottom: auto;">
+                              <div class="col-12">Sistema Administrativo Contable</div>                              
+                            </div>
+                          </div>
+                        </div>                        
+                      </div>
+                    </div>
+                    </div>                     
+                  </div>
+                </div>                               
+              </div>
+           </div>
+           <div class="col-1 col-lg-6"></div>
+            <div class="col-10 col-lg-5" style="background-color: rgba(255,255,255,.75); border-radius: 50px;margin-bottom: 5vh;margin-top:10vh;height: 60vh; padding:auto;">
+              <div class="row" style="height: 100%;"> <!-- Por defecto, el row tiene un height que se ajusta al contenido. Se pone 100% para que abarque todo el alto y la columna siguiente se pueda centrar"-->
+                <div class="col-12" style="margin: auto;"> <!-- Esta linea centra el col en lo alto -->
+                  <div class="row" style="margin:auto;"> <!-- Esta linea centa el row en lo alto -->
+                    <div class="col-12">
+                      <div class="row" style="padding-bottom: 3vh;">
+                        <div class="col-12 letra_encabezado_naranja" style="text-align: center;font-size:4vh;padding-bottom: 15px;">Inicio de sesión</div>
+                        <div class="col-12" style="text-align: center;">                  
+                          <img id="logoPMM" src='./img/user_logo.png' style='padding-left: 30px; width: auto; height: 20vh;'>
+                        </div>  
+                      </div>
+                      <div class="row justify-content-center">
+                        <div class="col-10 form-group">
+                          <input type="text" class="form-control" id="nombre_de_usuario" style="text-align: center;" placeholder="Nombre de Usuario">
+                        </div>
+                      </div>
+                      <div class="row justify-content-center">
+                        <div class="col-10 form-group">
+                          <input type="password" class="form-control" id="secret" style="text-align: center;" placeholder="Contraseña">
+                        </div>
+                      </div>
+                      <div class="row justify-content-center">
+                        <div id="errores" class="col-10 form-group tamanio_letra_errores" style="display: none;text-align: center;">
+                          ERROR
+                        </div>
+                      </div>              
+                      <div class="row justify-content-center">
+                        <div class="col-10 form-group">                  
+                          <div class="btn_rectangle" onclick="iniciar_sesion();">Continuar</div>
+                        </div>
+                      </div>                      
+                    </div>
+                  </div>
+                </div>
+              </div>                                                   
+              </div>
+              
+            </div>            
+         </div>
+      </div>
+   </body>
+</html>

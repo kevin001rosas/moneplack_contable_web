@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint: Multi-Level Menu</title>
+    <meta name="description" content="Blueprint: A basic template for a responsive multi-level menu" />
+    <meta name="keywords" content="blueprint, template, html, css, menu, responsive, mobile-friendly" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="../../js/popper.js?001"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+    <!--Íconos-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Cargamos los estilos -->
+    <link rel="stylesheet" type="text/css" href="../../css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/component.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/estilos.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/croppie.css" />
+    <link rel="stylesheet" href="../../css/bootstrap-select.css">
+
+    <!--Cargamos las utilidades y las librerías de Cookies, PDF y bootstrap Select-->
+    <script src="../../js/utilidades.js?001"></script>
+    <script src="../../js/cookie.js?001"></script>
+    <script src="../../js/pdfobject.min.js?001"></script>
+    <script src="../../js/bootstrap-select.js?001"></script>
+    <script src="../../js/croppie.js?001"></script>
+    <script src="../../js/modernizr-custom.js?001"></script>
+
+    <body>
+      <input style="display:none" type="file" id="file_picker_croppie" value="Choose Image" accept="image/*"/>
+        <!-- Main container -->
+        <div class="container-fluid">
+            <div id="menu">
+            </div>
+            <div class="content">
+                <div id="contenido_de_la_pagina" class="container-fluid">
+                    <div class="row" style="padding-left: 20px;padding-right: 20px;padding-top: 30px;">
+                        <div class="col-12">
+                            <div class="row form-group justify-content-center">
+                                <form id="form_busqueda" class="col-12 col-xl-8 form-group" autocomplete="off">
+                                  <input type="text" id="nombre_busqueda" name="kevin" class="input_white form-control" placeholder="Buscar por nombre o correo electrónico..." />                                  
+                                </form>
+                                <div id="div_registrar_profesional" style="" class="col-xl-3 col-12 form-group">
+                                    <div class="btn_rectangle_secundario" onclick="preparar_insert();">Registrar Cliente</div>
+                                </div>
+                                <div id="div_descargar" style="display: none;" class="col-12 col-xl-1 form-group" style="text-align: left; ">
+                                    <img class="button_icon" onclick="descargar_clientes()" src='../../img/excel.png' style='height: 34px; width:auto;'>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row" id="tarjetas">
+                            </div>
+                            <div class="row" id="paginacion">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal" role="dialog">
+            <div class="modal-dialog modal-xl">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-12 letra_encabezado_naranja">Datos De Cliente</div>
+                        </div>
+                    </div>
+                    <div class="modal-body">                      
+                        <div class="row" style="height: 100%;padding-top: 15px;padding-bottom: 15px;">
+                            <div id="modal_izquierdo" class="col-12 col-lg-8" style="margin: auto;">
+                                <div class="row form-group">                                    
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="razon_social" class="form-control" placeholder="razon_social" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="RFC" class="form-control" placeholder="RFC" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <select id="id_pais" data-live-search="true" class="form-control selectpicker" placeholder="País">
+                                        </select>                                        
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="codigo_postal" class="form-control" placeholder="codigo_postal" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <select id="id_estado" data-live-search="true" class="form-control selectpicker" placeholder="País">
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="municipio" class="form-control" placeholder="municipio" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="localidad" class="form-control" placeholder="localidad" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="colonia" class="form-control" placeholder="colonia" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="calle" class="form-control" placeholder="calle" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="numero_exterior" class="form-control" placeholder="numero_exterior" />
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div id="modal_derecho" class="col-12 col-lg-4">
+                              <div class="row" style="height: 100%;">                                  
+
+                                        <div id="div_foto_original" class="col-12" style="margin: auto; text-align: center;">
+
+                                          <div class="button_imagen" style="text-align:center;margin:auto;min-height: 200px; min-width:200px;width: 10vw;height:10vw; text-align: center;">
+                                            <img onclick="seleccionar_imagen();" id="foto_url" src='' style='cursor: pointer;height:auto; width: 100%;margin: auto;' />
+                                          </div>
+                                          
+                                        </div>
+                                        <div id="div_foto_croppie" style="display: none;margin: auto; text-align: center;" class="col-12">
+                                          <div class="row">
+                                            <div class="col-12">
+                                              <img id="croppie_container" style="text-align:center;margin:auto;min-height: 200px; min-width:200px;width: 10vw;height:10vw; text-align: center;">
+                                            </div>
+                                          </div>
+                                          <div class="row justify-content-center">
+                                            <div class="col-10">
+                                              <div class="btn_rectangle" onclick="cortar_subir_imagen();">Cortar</div>
+                                            </div>
+                                          </div>
+                                            
+                                          </div> 
+
+                              </div>
+                            </div>
+                            <div id="errores" class="col-12 form-group tamanio_letra_errores" style="text-align: center; display: none;">
+                                    ERROR
+                            </div>                                           
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-12">
+                        <div class="row justify-content-center">                          
+                          <div class="col-lg-3 col-12 form-group">
+                            <div class="btn_rectangle_secundario" data-dismiss="modal">Cancelar</div>
+                          </div>              
+                          <div class="col-lg-4 col-12 form-group">
+                            <div id="button_guardar_cambios" data-id_registro="-1" data-modo="insert" class="btn_rectangle" onclick="guardar_cambios(this)">Guardar Cambios</div>
+                          </div>
+                          <div class="col-lg-4 col-12 form-group">
+                            <div id="button_guardar_cambios" class="btn_rectangle_danger" onclick="confirmar_eliminacion();">Eliminar</div>
+                          </div>
+                        </div>
+                        <div class="row justify-content-center">
+                          <div class="col-lg-11 col-11 form-group">
+                            <div id="button_cargar_calendario" class="btn_rectangle" onclick="confirmar_descarga_de_complemento_de_pago();">Descargar Complemento de Pago</div>
+                          </div>                          
+                        </div>
+                        
+                      </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal_eliminacion" role="dialog">
+            <div class="modal-dialog modal-xl">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-12 letra_encabezado_naranja">Eliminación de Cliente</div>
+                        </div>
+                    </div>
+                    <div class="modal-body">                      
+                        <div class="row" style="height: 100%;padding-top: 15px;padding-bottom: 15px;">                            
+                            <div class="col-12 form-group" style="text-align: center;font-size: 20px;">
+                                ¿Realmente desea eliminar este cliente?
+                            </div>                                                                    
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-12">
+                        <div class="row justify-content-center">                          
+                          <div class="col-lg-4 col-12 form-group">
+                            <div class="btn_rectangle_secundario" onclick='$("#modal_eliminacion").modal("hide");'>No</div>
+                          </div>              
+                          <div class="col-lg-4 col-12 form-group">
+                            <div id="button_guardar_cambios" data-id_registro="-1" data-modo="insert" class="btn_rectangle_danger" onclick="eliminar()">Sí</div>
+                          </div>                          
+                        </div>
+                      </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal_descargar_complemento_de_pago" role="dialog">
+            <div class="modal-dialog modal-xl">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-12 letra_encabezado_naranja">Descarga de Complemento</div>
+                        </div>
+                    </div>
+                    <div class="modal-body">                      
+                        <div class="row" style="height: 100%;padding-top: 15px;padding-bottom: 15px;">                            
+                            <div class="col-12 form-group" style="text-align: center;font-size: 20px;">
+                                Por favor, selecciona un rango de fechas y después da clic en el botón "Descargar"
+                            </div>                                                                    
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-12">
+                        <div class="row justify-content-center">                          
+                          <div class="col-lg-4 col-12 form-group">                            
+                            <input type="date" id="fecha_inicial" class="input_white form-control" placeholder="Mes de consulta" />
+                          </div>
+                          <div class="col-lg-4 col-12 form-group">                            
+                            <input type="date" id="fecha_final" class="input_white form-control" placeholder="Mes de consulta" />
+                          </div>
+                          <div class="col-lg-4 col-12 form-group">
+                            <div id="button_guardar_cambios" data-id_registro="-1" data-modo="insert" class="btn_rectangle" onclick="descargar_complemento_de_pago()">Descargar</div>
+                          </div>                          
+                        </div>
+                      </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>        
+
+        <!-- /view -->
+        <script src="../../js/cargar_menu.js?001"></script>
+        <script src="../../js/classie.js?001"></script>
+        <script src="../../js/main.js?001"></script>
+        <script src="../../js/menu.js?001"></script>
+        <script>
+            $(document).ready(function() {
+                //Ponemos el menú activo actual. 
+                $("#button_clientes").addClass("menu__link--current");  
+                $("#form_busqueda").submit(function(e){e.preventDefault();});              
+
+                llenar_croppie(); 
+                llenar_datos();
+                llenar_comboboxes();
+                configurar_eventos_de_busqueda();
+                quitar_loading();                
+            });
+
+            function confirmar_descarga_de_complemento_de_pago()
+            {
+              //Mostramos el modal para preparar la descarga del complemento de pago. 
+              $("#modal_descargar_complemento_de_pago").modal("show"); 
+            }
+
+            function descargar_complemento_de_pago()
+            {
+                poner_loading(); 
+                var url = `${api_url}/descargas/getComplementoDePago`; 
+                var request = new XMLHttpRequest();
+                request.open('GET', url, true);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+                request.setRequestHeader('id_usuario', Cookies.get('id_usuario'));
+                request.setRequestHeader('id_tipo_de_usuario', Cookies.get('id_tipo_de_usuario'));
+                request.setRequestHeader("fecha_inicial", $("#fecha_inicial").val());
+                request.setRequestHeader("fecha_final", $("#fecha_final").val());
+                request.setRequestHeader("id_cliente", $("#button_guardar_cambios").attr("data-id_registro"));
+
+                //request.setRequestHeader('id_distribuidor', Cookies.get('id_distribuidor'));
+
+                request.responseType = 'blob';
+
+                request.onload = function() {
+                  // Only handle status code 200
+                  //alert(request.responseText);
+                  quitar_loading(); 
+                  if(request.status === 200) {
+                    // Try to find out the filename from the content disposition `filename` value
+                    var disposition = request.getResponseHeader('Content-Disposition');        
+                    var matches = /(=[^"]*.xls)/.exec(disposition.toString());
+                    var archivo = matches[1].substr(1);
+                    
+                    var filename = (matches != null && archivo ? archivo : 'archivo.xls');
+
+                    // The actual download
+                    var blob = new Blob([request.response], { type: 'application/pdf' });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = filename;
+
+                    document.body.appendChild(link);
+
+                    link.click();
+
+                    document.body.removeChild(link);
+                  }
+                  
+                  // some error handling should be done here...
+                };
+
+                request.send();
+                //Ocultamos el modal.             
+                $("#modal_descargar_complemento_de_pago").modal("hide");
+            }
+
+            function cortar_subir_imagen()
+            {
+              subir_imagen('foto_url', `${api_url}/clientes/uploadImage/${$('#button_guardar_cambios').attr('data-id_registro')}`);
+              location.reload(true);
+            }
+
+            function llenar_croppie()
+            {
+              $div_foto_original = "div_foto_original"; 
+              $div_foto_croppie = "div_foto_croppie"; 
+              $croppie_container = "croppie_container"; 
+              configurar_croppie(200, 200);
+
+            }
+
+            function llenar_comboboxes()
+            {
+              contador_solicitudes = 0; 
+              llenar_combobox_paises();
+              contador_solicitudes = 0; 
+              llenar_combobox_estados();
+            }
+
+            function confirmar_eliminacion()
+            {
+              $("#modal_eliminacion").modal("show"); 
+
+            }
+
+            function eliminar()
+            {
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/clientes/PostDelete/${$("#button_guardar_cambios").attr("data-id_registro")}`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false               
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Cliente Eliminado");
+               location.reload(true); 
+             });
+            }
+
+            function llenar_combobox_paises()
+            {
+              contador_solicitudes++; 
+              var settings = {
+                 "async": false,
+                 "crossDomain": true,
+                 "url": `${api_url}/paises/getForCombobox`, 
+                 "method": "GET",
+                 "headers": {
+                   "Content-Type": "application/json",
+                   "cache-control": "no-cache",
+                   "token": `${Cookies.get('token')}`, 
+                   "id_usuario": `${Cookies.get('id_usuario')}`
+                 },
+                 "processData": false,              
+                  success: function(data){    
+                  ////console.log(data); 
+                  //Parseamos la información. 
+                   var obj = JSON.parse(data);        
+            
+                   //Limpiamos el contenido actual 
+                   $("#id_pais").html("");
+                   var nuevo_contenido = ""; 
+            
+                   //Llenamos las nuevas opciones. 
+                   for (var x =  0; x < obj.length; x++) 
+                   {
+                     var id = obj[x]["id"]; 
+                     var nombre = obj[x]["nombre"];                
+                     nuevo_contenido += `<option value="${id}">${nombre}</option>`; 
+                   }
+            
+                   $("#id_pais").html(nuevo_contenido);   
+                   //Seleccinamos la primera opción
+                   $('#id_pais').selectpicker('val', $("#id_pais option:first").val());
+                   $("#id_pais").selectpicker('refresh'); 
+                 }
+                  , error: function(data) {
+                     //Volvemos a invocar la función. 
+                     if(contador_solicitudes<7)
+                      llenar_combobox_paises();              
+                  }
+               }
+            
+               $.ajax(settings);
+            }
+
+            function llenar_combobox_estados()
+            {
+              contador_solicitudes++; 
+              var settings = {
+                 "async": false,
+                 "crossDomain": true,
+                 "url": `${api_url}/estados/getForCombobox`,
+                 "method": "GET",
+                 "headers": {
+                   "Content-Type": "application/json",
+                   "cache-control": "no-cache",
+                   "token": `${Cookies.get('token')}`, 
+                   "id_usuario": `${Cookies.get('id_usuario')}`
+                 },
+                 "processData": false,
+                  success: function(data){    
+                  ////console.log(data); 
+                  //Parseamos la información. 
+                   var obj = JSON.parse(data);        
+            
+                   //Limpiamos el contenido actual 
+                   $("#id_estado").html("");
+                   var nuevo_contenido = ""; 
+            
+                   //Llenamos las nuevas opciones. 
+                   for (var x =  0; x < obj.length; x++) 
+                   {
+                     var id = obj[x]["id"]; 
+                     var nombre = obj[x]["nombre"];                
+                     nuevo_contenido += `<option value="${id}">${nombre}</option>`; 
+                   }
+            
+                   $("#id_estado").html(nuevo_contenido);   
+                   //Seleccinamos la primera opción
+                   $('#id_estado').selectpicker('val', $("#id_estado option:first").val());
+                   $("#id_estado").selectpicker('refresh'); 
+                 }
+                  , error: function(data) {
+                     //Volvemos a invocar la función. 
+                     if(contador_solicitudes<7)
+                      llenar_combobox_estados();              
+                  }
+               }
+            
+               $.ajax(settings);
+            }        
+
+            function actualizar_pagina(boton) {
+                pagina_actual = parseInt(boton.dataset.pagina);
+                //Hacemos solicitud a clientes/get_by_page/1 En caso de no existir un filtro guardado.
+                llenar_datos();
+
+                //Hacemos solicitud a clientes/search/1 En caso de existir un filtro guardado. 
+            }
+
+            function llenar_datos() {
+                var settings = {
+                    "async": false,
+                    "crossDomain": true,
+                    "url": `${api_url}/clientes/getSearchByPage`,
+                    "method": "GET",
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "cache-control": "no-cache",
+                        "token": `${Cookies.get('token')}`,
+                        "id_usuario": `${Cookies.get('id_usuario')}`,
+                        "id_tipo_de_usuario": `${Cookies.get('id_tipo_de_usuario')}`,
+                        "pagina": `${pagina_actual}`,
+                        "nombre": `${$("#nombre_busqueda").val()}`,
+                        "modo": ""
+                    },
+                    "processData": false,
+                    success: function(data) {
+
+                        //Limpiamos el contenido de las usuarios.
+                        $("#tarjetas").hide("slow");
+                        $("#tarjetas").html("");
+                        //Parseamos la información. 
+
+                        var obj = JSON.parse(data);
+                        console.log(data);
+                        var contenido_append = "";
+                        cantidad_elementos_en_pagina = obj.length;
+
+                        //Cambiamos el valor actual del id para preparar el update  
+                        for (var x = 0; x < obj.length; x++) {
+                            //No mostramos el último elemento. (Solo en caso de que este la página llena)
+                            if ((x == obj.length - 1) && (obj.length - 1 == cantidad_elementos_por_pagina))
+                                continue;
+
+                            //$("#nombre").val(obj[0]["nombre_raza"]);
+                            contenido_append += `
+                            <div class='col-12 col-xl-6 form-group'>
+                                <div data-id_registro='${obj[x]["id"]}' class='row div_row_tarjeta_lista' onclick='preparar_update(this);'>
+                                    <div class='col-12 div_tarjeta_arriba_contenido'>
+                                        <div class='row'>
+                                            <div class='col-3' style='text-align:center;padding-top: 20px;padding-bottom: 20px;'>
+                                            <div class="row" style="padding:0px;">
+                                              <div class="col-12" style="margin: auto;text-align:center;">
+                                                <div class="button_imagen" style="margin:auto;width: 120px;height:120px;">
+                                                  <img class="" src='${obj[x]["foto_url"]}' onerror="this.src='${default_image_url}';" style='cursor: pointer;height:auto; width: 100%;'/>
+                                                 </div>                                          
+                                               </div>
+                                            </div>
+                                            </div>           
+                                            <div class='col-9' style='padding-top: 20px;'>
+                                                <div class='row'>
+                                                    <div class='col-12 espaciado_estrecho titulo_de_tarjeta_md'>${obj[x]["razon_social"]}</div>
+                                                    <div class='col-12 espaciado_estrecho form-group' style='color:gray'><b>RFC: </b>${obj[x]["rfc"]}</div>
+                                                    <div class='col-12 espaciado_estrecho'><b>Dirección: </b>${obj[x]["direccion"]}</div>
+                                                </div>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                    <div class='col-12 div_tarjeta_abajo_button'>
+                                        Ver
+                                    </div>
+                                </div>                                
+                            </div>`;
+                        }
+
+                        $("#tarjetas").html(contenido_append);
+                        $("#tarjetas").show("slow");
+                        llenar_paginacion();
+
+                    },
+                    error: function(data) {
+                        alert("No se encontraron resultados");
+                        return;
+                    }
+                }
+
+                $.ajax(settings);
+
+            }
+
+            function preparar_insert()
+            {
+                limpiar_modal(); 
+                $("#button_guardar_cambios").attr("data-id_registro", "-1");
+                $("#button_guardar_cambios").attr("data-modo", "insert");
+
+                //Ocultamos el div de la foto. 
+                $("#modal_izquierdo").removeClass("col-12 col-lg-8"); 
+                $("#modal_derecho").removeClass("col-12 col-lg-4"); 
+
+                $("#modal_izquierdo").addClass("col-12"); 
+                $("#modal_derecho").addClass("col-12"); 
+
+                $("#modal_derecho").hide(); 
+
+                //Mostramos el modal
+                $("#modal").modal("show");
+            }
+
+            function limpiar_modal()
+            {
+                    $("#razon_social").val("");
+                    $("#RFC").val("");                    
+                    $("#codigo_postal").val("");                    
+                    $("#municipio").val("");
+                    $("#localidad").val("");
+                    $("#colonia").val("");
+                    $("#calle").val("");
+                    $("#numero_exterior").val("");
+
+                    $('#id_pais').selectpicker('val', $("#id_pais option:first").val());
+                    $("#id_pais").selectpicker('refresh');
+
+                    $('#id_estado').selectpicker('val', $("#id_estado option:first").val());
+                    $("#id_estado").selectpicker('refresh');
+
+                    $("#errores").hide();
+                    
+                   
+                    //Actualizamos la fotografía.                     
+                    $("#foto_url").attr('src', `${default_image_url}`);
+                    $("#foto_url").attr('onerror', `this.src='${default_image_url}';`);                 
+            }
+
+            function preparar_update(button) {
+                //Llenamos el modal con los datos del usuario
+                llenar_modal(button.dataset.id_registro); 
+
+                //Cambiamos el id_usuario y el modo del botón de guardar cambios
+                $("#button_guardar_cambios").attr("data-id_registro", button.dataset.id_registro);
+                $("#button_guardar_cambios").attr("data-modo", "update");
+
+                //Hacemos que el formulario abarque toda la pantalla (Sin la foto)
+                $("#modal_izquierdo").removeClass("col-12"); 
+                $("#modal_derecho").removeClass("col-12"); 
+
+                $("#modal_izquierdo").addClass("col-12 col-lg-8"); 
+                $("#modal_derecho").addClass("col-12 col-lg-4"); 
+
+                $("#modal_derecho").show(); 
+
+                //Mostramos el modal
+                $("#modal").modal("show");
+
+            }
+
+            function guardar_cambios(button)
+            {              
+              //Invocamos la función de validación. 
+              if(validacion()==false)
+                return; 
+              if(button.dataset.modo.toString()=="update")
+              {
+                update();                
+              }
+              else
+              {
+                insert(); 
+              }
+            }
+
+            function update()
+            {
+                var registro={};
+
+                registro.razon_social = $("#razon_social").val();
+                registro.RFC = $("#RFC").val();
+                registro.id_pais = $("#id_pais").val();
+                registro.codigo_postal = $("#codigo_postal").val();
+                registro.id_estado = $("#id_estado").val();
+                registro.municipio = $("#municipio").val();
+                registro.localidad = $("#localidad").val();
+                registro.colonia = $("#colonia").val();
+                registro.calle = $("#calle").val();
+                registro.numero_exterior = $("#numero_exterior").val();
+
+
+                console.log(registro);
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/clientes/POST/${$("#button_guardar_cambios").attr("data-id_registro")}`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false,
+               "data": JSON.stringify(registro)
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Cambios guardados");
+               location.reload(true); 
+             });
+            }
+
+            function insert()
+            {
+              var registro={};
+
+                registro.razon_social = $("#razon_social").val();
+                registro.RFC = $("#RFC").val();
+                registro.id_pais = $("#id_pais").val();
+                registro.codigo_postal = $("#codigo_postal").val();
+                registro.id_estado = $("#id_estado").val();
+                registro.municipio = $("#municipio").val();
+                registro.localidad = $("#localidad").val();
+                registro.colonia = $("#colonia").val();
+                registro.calle = $("#calle").val();
+                registro.numero_exterior = $("#numero_exterior").val();
+
+                console.log(registro);
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/clientes/Post/`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false,
+               "data": JSON.stringify(registro)
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Cambios guardados");
+               location.reload(true); 
+             });
+
+            }
+
+            function validacion()
+            {
+            if($("#razon_social").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique una razón social.");                
+                return false; 
+              }
+            if($("#RFC").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique un RFC.");                
+                return false; 
+              }
+            if($("#id_pais").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique país.");                
+                return false; 
+              }
+            if($("#codigo_postal").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique un código postal.");                
+                return false; 
+              }
+            if($("#id_estado").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique un estado.");
+                return false; 
+              }
+            if($("#municipio").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique un municipio.");                
+                return false; 
+              }
+            if($("#localidad").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique una localidad");                
+                return false; 
+              }
+            if($("#colonia").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique una colonia.");                
+                return false; 
+              }
+            if($("#calle").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique una calle.");                
+                return false; 
+              }
+            if($("#numero_exterior").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique un número exterior.");
+                return false; 
+              }
+                            
+
+              return true;
+
+            }
+
+            function llenar_modal(id_registro)
+            {
+              $("#errores").hide();
+
+            contador_solicitudes_modals++;
+            
+            var id = id_registro; 
+
+            var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/clientes/get/${id}`,
+                "method": "GET",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "cache-control": "no-cache",
+                    "token": `${Cookies.get('token')}`,
+                    "id_usuario": `${Cookies.get('id_usuario')}`,
+                    "id_tipo_de_usuario": `${Cookies.get('id_tipo_de_usuario')}`
+                },
+                "processData": false,
+                success: function(data) {
+                    if (data == "incorrecto") {
+                        //mandar_a_perfil(); 
+                        return;
+                    }
+                    console.log(data);
+                 
+
+                    //Parseamos la información. 
+                    var obj = JSON.parse(data);
+
+                    //Fijamos el nombre de la raza. 
+                    $("#razon_social").val(obj[0]["razon_social"]);
+                    $("#RFC").val(obj[0]["RFC"]);                    
+                    $("#codigo_postal").val(obj[0]["codigo_postal"]);                    
+                    $("#municipio").val(obj[0]["municipio"]);
+                    $("#localidad").val(obj[0]["localidad"]);
+                    $("#colonia").val(obj[0]["colonia"]);
+                    $("#calle").val(obj[0]["calle"]);
+                    $("#numero_exterior").val(obj[0]["numero_exterior"]);
+
+                   //En caso de no encontrar la opción en el combobox, la agregamos.                    
+                   if(String($(`#id_pais option[value=${obj[0]["id_pais"]}]`).val())
+                    !==String(obj[0]["id_pais"]))
+                   {                    
+                    $("#id_pais").append(`<option value="${obj[0]["id_pais"]}">${obj[0]["id_pais"]}</option>`);
+                   }
+
+                   //Seleccionamos el valor.                    
+                    $('#id_pais').selectpicker('val', obj[0]["id_pais"]);
+                    $("#id_pais").selectpicker('refresh'); 
+
+                   //En caso de no encontrar la opción en el combobox, la agregamos.                    
+                   if(String($(`#id_estado option[value=${obj[0]["id_estado"]}]`).val())
+                    !==String(obj[0]["id_estado"]))
+                   {                    
+                    $("#id_estado").append(`<option value="${obj[0]["id_estado"]}">${obj[0]["id_estado"]}</option>`);
+                   }
+
+                   //Seleccionamos el valor.                    
+                    $('#id_estado').selectpicker('val', obj[0]["id_estado"]);
+                    $("#id_estado").selectpicker('refresh');                                         
+
+                    //Actualizamos la fotografía.                     
+                    $("#foto_url").attr('src', obj[0]["foto_url"]);
+                    $("#foto_url").attr('onerror', `this.src='${default_image_url}';`);                    
+
+                },
+                error: function() {
+                    //Volvemos a invocar la función. 
+                    if (contador_solicitudes_modals < cantidad_maxima_solicitudes)
+                        llenar_modal(id_registro);
+                }
+            }
+
+            $.ajax(settings);
+
+            }
+
+            function configurar_eventos_de_busqueda() {
+                $("#nombre_busqueda").keydown(function(e) {
+                    if (e.keyCode == 13) {
+                        pagina_actual = 1;
+                        llenar_datos();
+                    }
+                });
+            }
+        </script>
+    </body>
+
+</html>

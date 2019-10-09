@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint: Multi-Level Menu</title>
+    <meta name="description" content="Blueprint: A basic template for a responsive multi-level menu" />
+    <meta name="keywords" content="blueprint, template, html, css, menu, responsive, mobile-friendly" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="../../js/popper.js?001"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+    <!--Íconos-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Cargamos los estilos -->
+    <link rel="stylesheet" type="text/css" href="../../css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/component.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/estilos.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/croppie.css" />
+    <link rel="stylesheet" href="../../css/bootstrap-select.css">
+
+    <!--Cargamos las utilidades y las librerías de Cookies, PDF y bootstrap Select-->
+    <script src="../../js/utilidades.js?001"></script>
+    <script src="../../js/cookie.js?001"></script>
+    <script src="../../js/pdfobject.min.js?001"></script>
+    <script src="../../js/bootstrap-select.js?001"></script>
+    <script src="../../js/croppie.js?001"></script>
+    <script src="../../js/modernizr-custom.js?001"></script>
+
+    <body>
+      <input style="display:none" type="file" id="file_picker_croppie" value="Choose Image" accept="image/*"/>
+        <!-- Main container -->
+        <div class="container-fluid">
+            <div id="menu">
+            </div>
+            <div class="content">
+                <div id="contenido_de_la_pagina" class="container-fluid">
+                    <div class="row" style="padding-left: 20px;padding-right: 20px;padding-top: 30px;">
+                        <div class="col-12">
+                            <div class="row form-group justify-content-center">
+                                <form id="form_busqueda" class="col-12 col-xl-8 form-group" autocomplete="off">
+                                  <input type="text" id="nombre_busqueda" name="kevin" class="input_white form-control" placeholder="Buscar por nombre o correo electrónico..." />                                  
+                                </form>
+                                <div id="div_registrar_profesional" style="" class="col-xl-3 col-12 form-group">
+                                    <div class="btn_rectangle_secundario" onclick="preparar_insert();">Registrar Usuario</div>
+                                </div>
+                                <div id="div_descargar" style="display: none;" class="col-12 col-xl-1 form-group" style="text-align: left; ">
+                                    <img class="button_icon" onclick="descargar_usuarios()" src='../../img/excel.png' style='height: 40px; width:auto;'>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row" id="tarjetas">
+                            </div>
+                            <div class="row" id="paginacion">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal" role="dialog">
+            <div class="modal-dialog modal-xl">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-12 letra_encabezado_naranja">Datos De Usuario</div>
+                        </div>
+                    </div>
+                    <div class="modal-body">                      
+                        <div class="row" style="height: 100%;padding-top: 15px;padding-bottom: 15px;">
+                            <div id="modal_izquierdo" class="col-12 col-lg-8" style="margin: auto;">
+                                <div class="row form-group">                                    
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="nombre_de_usuario" class="form-control" placeholder="Nombre de Usuario" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="password" id="secret" class="form-control" placeholder="Contraseña" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="apellido_paterno" class="form-control" placeholder="Apellido Paterno" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="apellido_materno" class="form-control" placeholder="Apellido Materno" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="nombres" class="form-control" placeholder="Nombres" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="text" id="email" class="form-control" placeholder="Email" />
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">                                        
+                                        <select id="id_tipo_de_usuario" class="form-control selectpicker" placeholder="Tipo de Usuario">
+                                        </select>
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div id="modal_derecho" class="col-12 col-lg-4">
+                              <div class="row" style="height: 100%;">                                  
+
+                                        <div id="div_foto_original" class="col-12" style="margin: auto; text-align: center;">
+
+                                          <div class="button_imagen" style="text-align:center;margin:auto;min-height: 200px; min-width:200px;width: 10vw;height:10vw; text-align: center;">
+                                            <img onclick="seleccionar_imagen();" id="foto_url" src='' style='cursor: pointer;height:auto; width: 100%;margin: auto;' />
+                                          </div>
+                                          
+                                        </div>
+                                        <div id="div_foto_croppie" style="display: none;margin: auto; text-align: center;" class="col-12">
+                                          <div class="row">
+                                            <div class="col-12">
+                                              <img id="croppie_container" style="text-align:center;margin:auto;min-height: 200px; min-width:200px;width: 10vw;height:10vw; text-align: center;">
+                                            </div>
+                                          </div>
+                                          <div class="row justify-content-center">
+                                            <div class="col-10">
+                                              <div class="btn_rectangle" onclick="cortar_subir_imagen();">Cortar</div>
+                                            </div>
+                                          </div>
+                                            
+                                          </div> 
+
+                              </div>
+                            </div>
+                            <div id="errores" class="col-12 form-group tamanio_letra_errores" style="text-align: center; display: none;">
+                                    ERROR
+                            </div>                                           
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-12">
+                        <div class="row justify-content-center">                          
+                          <div class="col-lg-3 col-12 form-group">
+                            <div class="btn_rectangle_secundario" data-dismiss="modal">Cancelar</div>
+                          </div>              
+                          <div class="col-lg-4 col-12 form-group">
+                            <div id="button_guardar_cambios" data-id_usuario="-1" data-modo="insert" class="btn_rectangle" onclick="guardar_cambios(this)">Guardar Cambios</div>
+                          </div>
+                          <div class="col-lg-4 col-12 form-group">
+                            <div id="button_guardar_cambios" class="btn_rectangle_danger" onclick="confirmar_eliminacion();">Eliminar</div>
+                          </div>
+                        </div>
+
+                        
+                          
+                        
+                      </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal_eliminacion" role="dialog">
+            <div class="modal-dialog modal-xl">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-12 letra_encabezado_naranja">Eliminación de Usuario</div>
+                        </div>
+                    </div>
+                    <div class="modal-body">                      
+                        <div class="row" style="height: 100%;padding-top: 15px;padding-bottom: 15px;">                            
+                            <div class="col-12 form-group" style="text-align: center;font-size: 20px;">
+                                ¿Realmente desea eliminar este usuario?
+                            </div>                                                                    
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-12">
+                        <div class="row justify-content-center">                          
+                          <div class="col-lg-4 col-12 form-group">
+                            <div class="btn_rectangle_secundario" onclick='$("#modal_eliminacion").modal("hide");'>No</div>
+                          </div>              
+                          <div class="col-lg-4 col-12 form-group">
+                            <div id="button_guardar_cambios" data-id_usuario="-1" data-modo="insert" class="btn_rectangle_danger" onclick="eliminar()">Sí</div>
+                          </div>                          
+                        </div>
+                      </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- /view -->
+        <script src="../../js/cargar_menu.js?001"></script>
+        <script src="../../js/classie.js?001"></script>
+        <script src="../../js/main.js?001"></script>
+        <script src="../../js/menu.js?001"></script>
+        <script>
+            $(document).ready(function() {
+                //Ponemos el menú activo actual. 
+                $("#button_usuarios").addClass("menu__link--current");  
+                $("#form_busqueda").submit(function(e){e.preventDefault();});              
+
+                llenar_croppie(); 
+                llenar_datos();
+                llenar_comboboxes(); 
+                configurar_eventos_de_busqueda();
+                quitar_loading();                
+            });
+
+            function cortar_subir_imagen()
+            {
+              subir_imagen('foto_url', `${api_url}/usuarios/uploadImage/${$('#button_guardar_cambios').attr('data-id_usuario')}`);
+              location.reload(true);
+            }
+
+            function llenar_croppie()
+            {
+              $div_foto_original = "div_foto_original"; 
+              $div_foto_croppie = "div_foto_croppie"; 
+              $croppie_container = "croppie_container"; 
+              configurar_croppie(200, 200);
+
+            }
+
+            function llenar_comboboxes()
+            {
+              llenar_combobox_tipos_de_usuario();
+            }
+
+            function confirmar_eliminacion()
+            {
+              $("#modal_eliminacion").modal("show"); 
+
+            }
+
+            function eliminar()
+            {
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/usuarios/PostDelete/${$("#button_guardar_cambios").attr("data-id_usuario")}`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false               
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Usuario Eliminado");
+               location.reload(true); 
+             });
+            }
+
+            function llenar_combobox_tipos_de_usuario()
+            {
+              contador_solicitudes++; 
+              var settings = {
+                 "async": false,
+                 "crossDomain": true,
+                 "url": `${api_url}/tiposdeusuario`, 
+                 "method": "GET",
+                 "headers": {
+                   "Content-Type": "application/json",
+                   "cache-control": "no-cache",
+                   "token": `${Cookies.get('token')}`, 
+                   "id_usuario": `${Cookies.get('id_usuario')}`
+                 },
+                 "processData": false,              
+                  success: function(data){    
+                  ////console.log(data); 
+                  //Parseamos la información. 
+                   var obj = JSON.parse(data);        
+            
+                   //Limpiamos el contenido actual 
+                   $("#id_tipo_de_usuario").html("");
+                   var nuevo_contenido = ""; 
+            
+                   //Llenamos las nuevas opciones. 
+                   for (var x =  0; x < obj.length; x++) 
+                   {
+                     var id = obj[x]["id"]; 
+                     var nombre = obj[x]["nombre"];                
+                     nuevo_contenido += `<option value="${id}">${nombre}</option>`; 
+                   }
+            
+                   $("#id_tipo_de_usuario").html(nuevo_contenido);   
+                   //Seleccinamos la primera opción
+                   $('#id_tipo_de_usuario').selectpicker('val', $("#id_tipo_de_usuario option:first").val());
+                   $("#id_tipo_de_usuario").selectpicker('refresh'); 
+                 }
+                  , error: function(data) {
+                     //Volvemos a invocar la función. 
+                     if(contador_solicitudes<7)
+                      llenar_combobox_tipos_de_usuario();              
+                  }
+               }
+            
+               $.ajax(settings);
+            }
+
+            function actualizar_pagina(boton) {
+                pagina_actual = parseInt(boton.dataset.pagina);
+                //Hacemos solicitud a clientes/get_by_page/1 En caso de no existir un filtro guardado.
+                llenar_datos();
+
+                //Hacemos solicitud a clientes/search/1 En caso de existir un filtro guardado. 
+            }
+
+            function llenar_datos() {
+                var settings = {
+                    "async": false,
+                    "crossDomain": true,
+                    "url": `${api_url}/usuarios/getSearchByPage`,
+                    "method": "GET",
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "cache-control": "no-cache",
+                        "token": `${Cookies.get('token')}`,
+                        "id_usuario": `${Cookies.get('id_usuario')}`,
+                        "id_tipo_de_usuario": `${Cookies.get('id_tipo_de_usuario')}`,
+                        "pagina": `${pagina_actual}`,
+                        "nombre": `${$("#nombre_busqueda").val()}`,
+                        "modo": ""
+                    },
+                    "processData": false,
+                    success: function(data) {
+
+                        //Limpiamos el contenido de las usuarios.
+                        $("#tarjetas").hide("slow");
+                        $("#tarjetas").html("");
+                        //Parseamos la información. 
+
+                        var obj = JSON.parse(data);
+                        console.log(data);
+                        var contenido_append = "";
+                        cantidad_elementos_en_pagina = obj.length;
+
+                        //Cambiamos el valor actual del id para preparar el update  
+                        for (var x = 0; x < obj.length; x++) {
+                            //No mostramos el último elemento. (Solo en caso de que este la página llena)
+                            if ((x == obj.length - 1) && (obj.length - 1 == cantidad_elementos_por_pagina))
+                                continue;
+
+                            //$("#nombre").val(obj[0]["nombre_raza"]);
+                            contenido_append += `
+                            <div class='col-12 col-xl-6 form-group'>
+                                <div data-id_usuario='${obj[x]["id"]}' class='row div_row_tarjeta_lista' onclick='preparar_update(this);'>
+                                    <div class='col-12 div_tarjeta_arriba_contenido'>
+                                        <div class='row'>
+                                            <div class='col-3' style='text-align:center;padding-top: 20px;padding-bottom: 20px;'>
+                                            <div class="row" style="padding:0px;">
+                                              <div class="col-12" style="margin: auto;text-align:center;">
+                                                <div class="button_imagen" style="margin:auto;width: 120px;height:120px;">
+                                                  <img class="" src='${obj[x]["foto_url"]}' onerror="this.src='${default_image_url}';" style='cursor: pointer;height:auto; width: 100%;'/>
+                                                 </div>                                          
+                                               </div>
+                                            </div>
+                                            </div>           
+                                            <div class='col-9' style='padding-top: 20px;'>
+                                                <div class='row'>
+                                                    <div class='col-12 espaciado_estrecho titulo_de_tarjeta_md'>${obj[x]["usuario"]}</div>
+                                                    <div class='col-12 espaciado_estrecho'><b>Nombre de Usuario: </b>${obj[x]["nombre_de_usuario"]}</div>
+                                                    <div class='col-12 espaciado_estrecho form-group' style='color:gray'><b>Email: </b>${obj[x]["email"]}</div>
+                                                    <div class='col-12 espaciado_estrecho' style='font-size: 20px;'><b>Tipo de Usuario: </b>${obj[x]["tipo_de_usuario"]}</div>
+                                                </div>
+                                            </div>           
+                                            <!--<div style='position: absolute; text-align:right;right: 10px; top:10px;'>
+                                                <span style='color: green;font-weight: bold;'>Activo</span>
+                                                <img src='http://localhost/48_horas/images/camera.png' style='height: 30px; width:auto;margin-top: -2px; '>
+                                            </div>                                            -->
+                                        </div>
+                                    </div>
+                                    <div class='col-12 div_tarjeta_abajo_button'>
+                                        Ver
+                                    </div>
+                                </div>                                
+                            </div>`;
+                        }
+
+                        $("#tarjetas").html(contenido_append);
+                        $("#tarjetas").show("slow");
+                        llenar_paginacion();
+
+                    },
+                    error: function(data) {
+                        alert("No se encontraron resultados");
+                        return;
+                    }
+                }
+
+                $.ajax(settings);
+
+            }
+
+            function preparar_insert()
+            {
+                limpiar_modal(); 
+                $("#button_guardar_cambios").attr("data-id_usuario", "-1");
+                $("#button_guardar_cambios").attr("data-modo", "insert");
+
+                //Ocultamos el div de la foto. 
+                $("#modal_izquierdo").removeClass("col-12 col-lg-8"); 
+                $("#modal_derecho").removeClass("col-12 col-lg-4"); 
+
+                $("#modal_izquierdo").addClass("col-12"); 
+                $("#modal_derecho").addClass("col-12"); 
+
+                $("#modal_derecho").hide(); 
+
+                //Mostramos el modal
+                $("#modal").modal("show");
+            }
+
+            function limpiar_modal()
+            {
+                    $("#nombre_de_usuario").val("");
+                    $("#apellido_paterno").val("");
+                    $("#apellido_materno").val("");
+                    $("#nombres").val("");
+                    $("#secret").val("");
+                    $("#email").val("");              
+
+                    $("#errores").hide();
+
+                    //Actualizamos el tipo de usuario.
+                    $('#id_tipo_de_usuario').selectpicker('val', $("#id_tipo_de_usuario option:first").val());
+                    $("#id_tipo_de_usuario").selectpicker('refresh');
+                   
+                    //Actualizamos la fotografía.                     
+                    $("#foto_url").attr('src', `${default_image_url}`);
+                    $("#foto_url").attr('onerror', `this.src='${default_image_url}';`);                 
+            }
+
+            function preparar_update(button) {
+                //Llenamos el modal con los datos del usuario
+                llenar_modal(button.dataset.id_usuario);
+
+                //Cambiamos el id_usuario y el modo del botón de guardar cambios
+                $("#button_guardar_cambios").attr("data-id_usuario", button.dataset.id_usuario);
+                $("#button_guardar_cambios").attr("data-modo", "update");
+
+                //Hacemos que el formulario abarque toda la pantalla (Sin la foto)
+                $("#modal_izquierdo").removeClass("col-12"); 
+                $("#modal_derecho").removeClass("col-12"); 
+
+                $("#modal_izquierdo").addClass("col-12 col-lg-8"); 
+                $("#modal_derecho").addClass("col-12 col-lg-4"); 
+
+                $("#modal_derecho").show(); 
+
+                //Mostramos el modal
+                $("#modal").modal("show");
+
+            }
+
+            function guardar_cambios(button)
+            {              
+              //Invocamos la función de validación. 
+              if(validacion()==false)
+                return; 
+              if(button.dataset.modo.toString()=="update")
+              {
+                update();                
+              }
+              else
+              {
+                insert(); 
+              }
+            }
+
+            function update()
+            {
+                var usuario={};
+
+                usuario.nombre_de_usuario = $("#nombre_de_usuario").val();
+                usuario.apellido_paterno = $("#apellido_paterno").val();
+                usuario.apellido_materno = $("#apellido_materno").val();
+                usuario.nombres = $("#nombres").val();
+                usuario.secret = $("#secret").val();
+                usuario.email = $("#email").val();
+                usuario.id_tipo_de_usuario = $("#id_tipo_de_usuario").val();
+
+
+                console.log(usuario);
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/usuarios/POST/${$("#button_guardar_cambios").attr("data-id_usuario")}`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false,
+               "data": JSON.stringify(usuario)
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Cambios guardados");
+               location.reload(true); 
+             });
+            }
+
+            function insert()
+            {
+              var usuario={};
+
+                usuario.nombre_de_usuario = $("#nombre_de_usuario").val();
+                usuario.apellido_paterno = $("#apellido_paterno").val();
+                usuario.apellido_materno = $("#apellido_materno").val();
+                usuario.nombres = $("#nombres").val();
+                usuario.secret = $("#secret").val();
+                usuario.email = $("#email").val();
+                usuario.id_tipo_de_usuario = $("#id_tipo_de_usuario").val();
+
+
+                console.log(usuario);
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/usuarios/Post/`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false,
+               "data": JSON.stringify(usuario)
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Cambios guardados");
+               location.reload(true); 
+             });
+
+            }
+
+            function validacion()
+            {
+              if($("#nombre_de_usuario").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique un nombre de usuario para el usuario.");                
+                return false; 
+              }
+              if($("#secret").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique una contraseña para el usuario.");                
+                return false; 
+              }
+              if($("#apellido_paterno").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique un apellido paterno para el usuario.");                
+                return false; 
+              }
+              if($("#apellido_materno").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique un apellido materno para el usuario.");                
+                return false; 
+              }
+              if($("#nombres").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique los nombres para el usuario.");                
+                return false; 
+              }
+              if($("#email").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique un email para el usuario.");                
+                return false; 
+              }
+              if($("#id_tipo_de_usuario").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique el tipo de usuario.");                
+                return false; 
+              }
+
+              return true;
+
+            }
+
+            function llenar_modal(id_usuario)
+            {
+              $("#errores").hide();
+
+            contador_solicitudes_modals++;
+            
+            var id = id_usuario; 
+
+            var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/usuarios/get/${id}`,
+                "method": "GET",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "cache-control": "no-cache",
+                    "token": `${Cookies.get('token')}`,
+                    "id_usuario": `${Cookies.get('id_usuario')}`,
+                    "id_tipo_de_usuario": `${Cookies.get('id_tipo_de_usuario')}`
+                },
+                "processData": false,
+                success: function(data) {
+                    if (data == "incorrecto") {
+                        //mandar_a_perfil(); 
+                        return;
+                    }
+                    console.log(data);
+                 
+
+                    //Parseamos la información. 
+                    var obj = JSON.parse(data);
+
+                    //Fijamos el nombre de la raza. 
+                    $("#nombre_de_usuario").val(obj[0]["nombre_de_usuario"]);
+                    $("#apellido_paterno").val(obj[0]["apellido_paterno"]);
+                    $("#apellido_materno").val(obj[0]["apellido_materno"]);
+                    $("#nombres").val(obj[0]["nombres"]);
+                    $("#secret").val(obj[0]["secret"]);
+                    $("#email").val(obj[0]["email"]);             
+
+                   
+                   //En caso de no encontrar la opción en el combobox, la agregamos.                    
+                   if(String($(`#id_tipo_de_usuario option[value=${obj[0]["id_tipo_de_usuario"]}]`).val())
+                    !==String(obj[0]["id_tipo_de_usuario"]))
+                   {                    
+                    $("#id_tipo_de_usuario").append(`<option value="${obj[0]["id_tipo_de_usuario"]}">${obj[0]["tipo_de_usuario"]}</option>`);
+                   }
+
+                   //Seleccionamos el valor.                    
+                    $('#id_tipo_de_usuario').selectpicker('val', obj[0]["id_tipo_de_usuario"]);
+                    $("#id_tipo_de_usuario").selectpicker('refresh'); 
+
+
+                    //Actualizamos la fotografía.                     
+                    $("#foto_url").attr('src', obj[0]["foto_url"]);
+                    $("#foto_url").attr('onerror', `this.src='${default_image_url}';`);                    
+
+                },
+                error: function() {
+                    //Volvemos a invocar la función. 
+                    if (contador_solicitudes_modals < cantidad_maxima_solicitudes)
+                        llenar_modal(id_usuario);
+                }
+            }
+
+            $.ajax(settings);
+
+            }
+
+            function configurar_eventos_de_busqueda() {
+                $("#nombre_busqueda").keydown(function(e) {
+                    if (e.keyCode == 13) {
+                        pagina_actual = 1;
+                        llenar_datos();
+                    }
+                });
+            }
+        </script>
+    </body>
+
+</html>

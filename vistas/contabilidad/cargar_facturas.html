@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint: Multi-Level Menu</title>
+    <meta name="description" content="Blueprint: A basic template for a responsive multi-level menu" />
+    <meta name="keywords" content="blueprint, template, html, css, menu, responsive, mobile-friendly" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="favicon.ico">
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="../../js/popper.js?001"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <!--Íconos-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Cargamos los estilos -->
+    <link rel="stylesheet" type="text/css" href="../../css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/component.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/estilos.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/croppie.css" />
+    <link rel="stylesheet" href="../../css/bootstrap-select.css">
+    <!--Cargamos las utilidades y las librerías de Cookies, PDF y bootstrap Select-->
+    <script src="../../js/utilidades.js?002"></script>
+    <script src="../../js/cookie.js?001"></script>
+    <script src="../../js/pdfobject.min.js?001"></script>
+    <script src="../../js/bootstrap-select.js?001"></script>
+    <script src="../../js/croppie.js?001"></script>
+    <script src="../../js/modernizr-custom.js?001"></script>
+    <script src="../../js/Chart.js?001"></script>
+    <script src="../../js/jquery.csv.js"></script>
+  <body>
+    <input style="display:none" type="file" id="file_picker_croppie" value="Choose Image" accept="image/*"/>
+    <!-- Main container -->
+    <div class="container-fluid">
+      <div id="menu">
+      </div>
+      <div class="content">
+        <div id="contenido_de_la_pagina" class="container-fluid">
+          <div class="row" style="padding-left: 20px;padding-right: 20px;padding-top: 30px;">
+            <div class="col-12">
+              <div class="row form-group justify-content-center">
+                <div id="" style="" class="col-12 form-group">
+                  <div class="row justify-content-center" style="height: 100%;">
+                    <div class="col-12 col-xl-3" style="margin: auto;">
+                      <div class="btn_rectangle" onclick="probar_csv();">Subir archivo</div>
+                      <input type="file" accept=".csv" id="boton_cargar_archivo" style="display: none;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="display: none;" id="div_reporte_de_facturas_cargadas" class="col-12">
+              <div class="row div_row_tarjeta">
+                <div class="col-12 div_tarjeta_arriba_encabezado" style="">
+                  Reporte de facturas cargadas
+                </div>
+                <div class="col-12 div_tarjeta_abajo_contenido">
+                  <div class="row tamanio_letra_estandar justify-content-center" style="padding-top:15px; padding-bottom: 15px; " id="div_datos_de_solicitud">
+                    <div id="tabla_reporte" class="col-12">
+                      Aquí va la tabla con el reporte. 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /view -->
+    <script src="../../js/cargar_menu.js?001"></script>
+    <script src="../../js/classie.js?001"></script>
+    <script src="../../js/main.js?001"></script>
+    <script src="../../js/menu.js?001"></script>
+    <script>
+      $(document).ready(function() {
+          //Ponemos el menú activo actual.                 
+          $("#contabilidad").addClass("menu__link--current");  
+          $("#form_busqueda").submit(function(e){e.preventDefault();});
+          quitar_loading(); 
+          llenar_combobox_clientes(); 
+          //Preparamos el bind para leer los archivos csv
+          $('#boton_cargar_archivo').bind('change', handleDialog);
+      
+      });
+      
+      function csvJSON(csv){
+      
+      var lines=csv.split("\n");
+      
+      var result = [];
+      
+      var headers=lines[0].split(",");
+      
+      for(var i=1;i<lines.length;i++){
+      
+          var obj = {};
+          var currentline=lines[i].split(",");
+      
+          for(var j=0;j<headers.length;j++){
+              obj[headers[j]] = currentline[j];
+          }
+      
+          result.push(obj);
+      
+      }
+      
+      //return result; //JavaScript object
+      return JSON.stringify(result); //JSON
+      }
+      
+      function llenar_combobox_clientes()
+      {
+        contador_solicitudes++; 
+        var settings = {
+           "async": false,
+           "crossDomain": true,
+           "url": `${api_url}/clientes/getForCombobox`, 
+           "method": "GET",
+           "headers": {
+             "Content-Type": "application/json",
+             "cache-control": "no-cache",
+             "token": `${Cookies.get('token')}`, 
+             "id_usuario": `${Cookies.get('id_usuario')}`
+           },
+           "processData": false,              
+            success: function(data){    
+            ////console.log(data); 
+            //Parseamos la información. 
+             var obj = JSON.parse(data);        
+      
+             //Limpiamos el contenido actual 
+             $("#id_cliente").html("");
+             var nuevo_contenido = ""; 
+      
+             //Llenamos las nuevas opciones. 
+             for (var x =  0; x < obj.length; x++) 
+             {
+               var id = obj[x]["id"]; 
+               var nombre = obj[x]["nombre"];                
+               nuevo_contenido += `<option value="${id}">${nombre}</option>`; 
+             }
+      
+             $("#id_cliente").html(nuevo_contenido);   
+             //Seleccinamos la primera opción
+             $('#id_cliente').selectpicker('val', $("#id_cliente option:first").val());
+             $("#id_cliente").selectpicker('refresh'); 
+           }
+            , error: function(data) {
+               //Volvemos a invocar la función. 
+               if(contador_solicitudes<cantidad_maxima_solicitudes)
+                llenar_combobox_clientes();              
+            }
+         }
+      
+         $.ajax(settings);
+      }
+      
+      function llenar_datos()
+      {
+        contador_solicitudes_modals = 0; 
+        solicitar_informacion(); 
+      
+      }
+      
+      function solicitar_informacion()
+      {
+            contador_solicitudes_modals++; 
+      
+            var registro = {}; 
+            registro.id_cliente = $("#id_cliente").val();
+            registro.mes = $("#mes").val(); 
+      
+            var settings = {
+            "async": false,
+            "crossDomain": true,
+            "url": `${api_url}/facturas/postResumenMensualPorCliente/`,
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`,
+                "id_usuario": `${Cookies.get('id_usuario')}`,                      
+                "id_tipo_de_usuario": `${Cookies.get('id_tipo_de_usuario')}`
+            },
+            "data": JSON.stringify(registro), 
+            "processData": false,
+            success: function(data) {
+                if (data == "incorrecto") {
+                    //mandar_a_perfil(); 
+                    return;
+                }
+                console.log(data);
+      
+                //Parseamos la información. 
+                var obj = JSON.parse(data);
+      
+                //Limpiamos el Pie Chart. 
+      
+                config.data.datasets = []; 
+                arreglo_temporal = {}; 
+                arreglo_temporal.data = [];
+                arreglo_temporal.backgroundColor = []; 
+                arreglo_temporal.label = "Facturas"; 
+                config.data.labels = []; 
+      
+      
+                //Agregamos los datos al piechart
+                for (var x = 0; x < obj.length; x++) 
+                {
+                  //Iteramos con cada uno de los valores
+                  arreglo_temporal.data.push(obj[x]["suma"]);
+                  arreglo_temporal.backgroundColor.push(obj[x]["coloreado"]); 
+                  config.data.labels.push(obj[x]["estado"]); 
+                }
+      
+                
+      
+                config.data.datasets = [arreglo_temporal];
+      
+                //Refrescamos el pie chart para mostrar los cambios
+                window.myPie.update();
+      
+      
+            },
+            error: function() {
+                //Volvemos a invocar la función. 
+                if (contador_solicitudes_modals < cantidad_maxima_solicitudes)
+                    solicitar_informacion();
+            }
+        }
+      
+        $.ajax(settings);
+      
+      }
+      
+      function configurar_eventos_de_busqueda() {
+          $("#nombre_busqueda").keydown(function(e) {
+              if (e.keyCode == 13) {
+                  pagina_actual = 1;
+                  llenar_datos();
+              }
+          });
+      }
+      
+      window.chartColors = {
+      red: 'rgb(255, 99, 132)',
+      orange: 'rgb(255, 159, 64)',
+      yellow: 'rgb(255, 205, 86)',
+      green: 'rgb(75, 192, 192)',
+      blue: 'rgb(54, 162, 235)',
+      purple: 'rgb(153, 102, 255)',
+      grey: 'rgb(201, 203, 207)'
+      };
+      
+      
+      var randomScalingFactor = function() {
+      return Math.round(Math.random() * 100);
+      };
+      
+      var config = {
+      type: 'pie',
+      data: {
+      datasets: [{
+      data: [
+      randomScalingFactor(),
+      randomScalingFactor(),
+      randomScalingFactor(),
+      randomScalingFactor(),
+      randomScalingFactor(),
+      ],
+      backgroundColor: [
+      window.chartColors.red,
+      window.chartColors.orange,
+      window.chartColors.yellow,
+      window.chartColors.green,
+      window.chartColors.blue,
+      ],
+      label: 'Facturas'
+      }],
+      labels: [
+      'Red',
+      'Orange',
+      'Yellow',
+      'Green',
+      'Blue'
+      ]
+      },
+      options: {
+      responsive: true
+      }
+      };
+      
+      function cargar_grafica()
+      {
+      config.data.datasets = [{
+      data: [
+      30
+      , 200
+      , 150           
+      ],
+      backgroundColor: [
+      window.chartColors.red,
+      window.chartColors.green,
+      window.chartColors.yellow,            
+      ],
+      label: 'Facturas'
+      }]; 
+      
+      config.data.labels = [
+      'Canceladas',
+      'Pagadas',
+      'Pendientes'          
+      ]; 
+      
+      window.myPie.update();
+      
+      }
+      
+      function probar_csv()
+      {
+      $("#boton_cargar_archivo").click();             
+      }
+      
+      function handleDialog(event) {
+      
+      var files = event.target.files;
+      var file = files[0];
+
+      if(file===undefined)
+        return; 
+
+      poner_loading(); 
+      
+      var fileInfo = `
+      <span style="font-weight:bold;">${escape(file.name)}</span><br>
+      - FileType: ${file.type || 'n/a'}<br>
+      - FileSize: ${file.size} bytes<br>
+      - LastModified: ${file.lastModifiedDate ? file.lastModifiedDate.toLocaleDateString() : 'n/a'}
+      `;
+      $('#file-info').append(fileInfo);
+      
+      var reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = function(event){
+      var csv = event.target.result;
+      var data = $.csv.toObjects(csv);
+      //var json_data = JSON.stringify(data);
+      precargar_facturas_en_lote(data);
+      }
+      }
+      
+      function precargar_facturas_en_lote(data)
+      {   
+      //console.log(JSON.stringify(data, 2, null)); 
+      
+      var settings = {
+      "async": false,
+      "crossDomain": true,
+      "url": `${api_url}/facturas/precargarEnLote`, 
+      "method": "POST",
+      "headers": {
+      "Content-Type": "application/json",
+      "cache-control": "no-cache",
+      "token": `${Cookies.get('token')}`, 
+      "id_usuario": `${Cookies.get('id_usuario')}`
+      },
+      "processData": false,
+      "data": JSON.stringify(data, 2, null)
+      }
+      $.ajax(settings).done(function (data) {
+      //Actualizamos el elemento de la raza en la interfaz.           
+      //alert("Cambios guardados");
+      //location.reload(true); 
+      //Mostramos el reporte de los registros que se cargaron correctamente
+      quitar_loading(); 
+      $("#div_reporte_de_facturas_cargadas").show("slow");
+
+      $("#tabla_reporte").hide("");
+      $("#tabla_reporte").html("");
+
+      //Contamos la cantidad de registros correctos y no correctos.
+
+      
+      
+      //Parseamos la información. 
+      var obj = JSON.parse(data);
+
+      cantidad_elementos_en_pagina = obj.length;
+
+      var contenido_append_previo = ""; 
+      var contenido_append = "";
+      contador_cargados = 0; 
+      contador_errores = 0;
+
+      contenido_append += `
+      <div class="row">
+        <div class="col-12 form-group">
+                <table style="width: 100%;margin-top: 15px;font-size:20px;">
+                   <tr class="tr_no_hover" style="border-bottom-left-radius: 40px;">                                        
+                      <th class="th_left" style="width:10%">Folio</th>
+                      <th class="" style="width:20%">Concepto</th>
+                      <th class="" style="width:30%">Cliente</th>
+                      <th class="th_right" style="width: 30%">Estado</th>                                                                              
+                   </tr>`
+
+      //Cambiamos el valor actual del id para preparar el update  
+      for (var x = 0; x < obj.length; x++) {
+          //No mostramos el último elemento. (Solo en caso de que este la página llena)
+          if ((x == obj.length - 1) && (obj.length - 1 == cantidad_elementos_por_pagina))
+              continue;
+            var estilo_estado = ""; 
+
+
+            if(String(obj[x]["estado_de_registro"]).toLowerCase().includes("cargado"))
+            {
+              contador_cargados = contador_cargados + 1; 
+              estilo_estado = "style = 'color: green;'"; 
+            }
+            if(String(obj[x]["estado_de_registro"]).toLowerCase().includes("error"))
+            {
+              contador_errores = contador_errores + 1; 
+              estilo_estado = "style = 'background-color: red; color: white;'"; 
+            }
+
+          contenido_append += `
+        <tr>
+          <td>${obj[x]["folio"]}</td>
+          <td>${obj[x]["concepto"]}</td>
+          <td>${obj[x]["cliente"]}</td>
+          <td ${estilo_estado}><b>${obj[x]["estado_de_registro"]}</b></td>
+       </tr>`;
+      }
+
+      //Hacemos el append de los botones. 
+      contenido_append += `</table>
+             </div></div>`;
+
+
+      contenido_append_previo += 
+      `<div style="font-size: 20px; " class="row">        
+        <div style="color: #159f9d;text-align:center; " class="col-12 form-group">
+          ${contador_cargados} Facturas fueron cargadas correctamente.
+        </div>
+        <div style="color: red;text-align:center; " class="col-12 form-group">
+          ${contador_errores} Facturas fueron cargadas con errores.
+        </div>
+      </div`;              
+
+      $("#tabla_reporte").html(contenido_append_previo + contenido_append);
+      $("#tabla_reporte").show("slow");      
+
+
+      });
+              
+      
+      }
+      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint: Multi-Level Menu</title>
+    <meta name="description" content="Blueprint: A basic template for a responsive multi-level menu" />
+    <meta name="keywords" content="blueprint, template, html, css, menu, responsive, mobile-friendly" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="../../js/popper.js?001"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+    <!--Íconos-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Cargamos los estilos -->
+    <link rel="stylesheet" type="text/css" href="../../css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/component.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/estilos.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/croppie.css" />
+    <link rel="stylesheet" href="../../css/bootstrap-select.css">
+
+    <!--Cargamos las utilidades y las librerías de Cookies, PDF y bootstrap Select-->
+    <script src="../../js/utilidades.js?001"></script>
+    <script src="../../js/cookie.js?001"></script>
+    <script src="../../js/pdfobject.min.js?001"></script>
+    <script src="../../js/bootstrap-select.js?001"></script>
+    <script src="../../js/croppie.js?001"></script>
+    <script src="../../js/modernizr-custom.js?001"></script>
+
+    <body>
+      <input style="display:none" type="file" id="file_picker_croppie" value="Choose Image" accept="image/*"/>
+        <!-- Main container -->
+        <div class="container-fluid">
+            <div id="menu">
+            </div>
+            <div class="content">
+                <div id="contenido_de_la_pagina" class="container-fluid">
+                    <div class="row" style="padding-left: 20px;padding-right: 20px;padding-top: 30px;">
+                        <div class="col-12">
+                            <div class="row form-group justify-content-center">
+                                <form id="form_busqueda" class="col-12 col-xl-8 form-group" autocomplete="off">
+                                  <input type="text" id="nombre_busqueda" name="kevin" class="input_white form-control" placeholder="Buscar por nombre o correo electrónico..." />                                  
+                                </form>
+                                <div id="div_registrar_profesional" style="" class="col-xl-3 col-12 form-group">
+                                    <div class="btn_rectangle_secundario" onclick="preparar_insert();">Registrar Pago</div>
+                                </div>
+                                <div id="div_descargar" style="display: none;" class="col-12 col-xl-1 form-group" style="text-align: left; ">
+                                    <img class="button_icon" onclick="descargar_tipos_de_productos()" src='../../img/excel.png' style='height: 34px; width:auto;'>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row" id="tarjetas">
+                            </div>
+                            <div class="row" id="paginacion">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal" role="dialog">
+            <div class="modal-dialog modal-xl">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-12 letra_encabezado_naranja">Datos de pago</div>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="height: 100%;padding-top: 15px;">
+                            <div id="modal_izquierdo" class="col-12 col-lg-8" style="margin: auto;">
+                                <div class="row form-group">
+                                    <div class="col-12 col-lg-6 form-group">                                        
+                                        <input type="date" id="fecha" class="form-control" placeholder="Fecha"/>
+                                    </div>                                    
+                                    <div class="col-12 col-lg-6 form-group">
+                                        <input type="number" id="importe" class="form-control" placeholder="Importe"/>
+                                    </div>
+                                    <div class="col-12 col-lg-6 form-group">                                        
+                                        <select id="id_banco" data-live-search="true" class="form-control selectpicker" placeholder="Banco">
+                                        </select>
+                                    </div>                                    
+                                </div>                                
+                            </div>
+                            <div id="modal_derecho" class="col-12 col-lg-4">
+                              <div class="row" style="height: 100%;">
+                                        <div id="div_foto_original" class="col-12" style="margin: auto; text-align: center;">
+                                          <div class="button_imagen" style="text-align:center;margin:auto;min-height: 200px; min-width:200px;width: 10vw;height:10vw; text-align: center;">
+                                            <img onclick="seleccionar_imagen();" id="foto_url" src='' style='cursor: pointer;height:auto; width: 100%;margin: auto;' />
+                                          </div>                                          
+                                        </div>
+                                        <div id="div_foto_croppie" style="display: none;margin: auto; text-align: center;" class="col-12">
+                                          <div class="row">
+                                            <div class="col-12">
+                                              <img id="croppie_container" style="text-align:center;margin:auto;min-height: 200px; min-width:200px;width: 10vw;height:10vw; text-align: center;">
+                                            </div>
+                                          </div>
+                                          <div class="row justify-content-center">
+                                            <div class="col-10">
+                                              <div class="btn_rectangle" onclick="cortar_subir_imagen();">Cortar</div>
+                                            </div>
+                                          </div>                                            
+                                        </div> 
+
+                              </div>
+                            </div>
+                            <div id="errores" class="col-12 form-group tamanio_letra_errores" style="text-align: center; display: none;">
+                                    ERROR
+                            </div>                                           
+                        </div>              
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-12">
+                        <div class="row justify-content-center">                          
+                          <div class="col-lg-3 col-12 form-group">
+                            <div class="btn_rectangle_secundario" data-dismiss="modal">Cancelar</div>
+                          </div>              
+                          <div class="col-lg-4 col-12 form-group">
+                            <div id="button_guardar_cambios" data-id_registro="-1" data-modo="insert" class="btn_rectangle" onclick="guardar_cambios(this)">Guardar Cambios</div>
+                          </div>
+                          <div class="col-lg-4 col-12 form-group" id="div_eliminacion">
+                            <div data-id_registro="-1" class="btn_rectangle_danger" onclick="confirmar_eliminacion(this);">Eliminar</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal_eliminacion" role="dialog">
+            <div class="modal-dialog modal-xl">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-12 letra_encabezado_naranja">Eliminación de registro</div>
+                        </div>
+                    </div>
+                    <div class="modal-body">                      
+                        <div class="row" style="height: 100%;padding-top: 15px;padding-bottom: 15px;">                            
+                            <div class="col-12 form-group" style="text-align: center;font-size: 20px;">
+                                ¿Realmente desea eliminar este registro?
+                            </div>                                                                    
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-12">
+                        <div class="row justify-content-center">                          
+                          <div class="col-lg-4 col-12 form-group">
+                            <div class="btn_rectangle_secundario" onclick='$("#modal_eliminacion").modal("hide");'>No</div>
+                          </div>              
+                          <div class="col-lg-4 col-12 form-group">
+                            <div id="button_guardar_cambios" data-id_registro="-1" data-modo="insert" class="btn_rectangle_danger" onclick="eliminar()">Sí</div>
+                          </div>                          
+                        </div>
+                      </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+
+        <!-- /view -->
+        <script src="../../js/cargar_menu.js?001"></script>
+        <script src="../../js/classie.js?001"></script>
+        <script src="../../js/main.js?001"></script>
+        <script src="../../js/menu.js?001"></script>
+        <script>
+            $(document).ready(function() {
+                //Ponemos el menú activo actual.                 
+                $("#contabilidad").addClass("menu__link--current");  
+                $("#form_busqueda").submit(function(e){e.preventDefault();});              
+
+                llenar_croppie(); 
+                llenar_datos();
+                llenar_comboboxes();
+                configurar_eventos_de_busqueda();
+                quitar_loading();                
+
+            });
+
+            function cortar_subir_imagen()
+            {
+              subir_imagen('foto_url', `${api_url}/tipos_de_productos/uploadImage/${$('#button_guardar_cambios').attr('data-id_registro')}`);
+              location.reload(true);
+            }
+
+            function llenar_croppie()
+            {
+              $div_foto_original = "div_foto_original"; 
+              $div_foto_croppie = "div_foto_croppie"; 
+              $croppie_container = "croppie_container"; 
+              configurar_croppie(200, 200);
+
+            }
+
+            function llenar_comboboxes()
+            {
+              //llenar_combobox_clientes();
+              //llenar_combobox_productos();
+              //llenar_combobox_estados_de_factura();
+              llenar_combobox_bancos();              
+            }
+
+            function llenar_producto()
+            {
+                //Hacemos un select al producto en función del producto seleccionado.
+                contador_solicitudes=0; 
+                llenar_datos_de_producto(); 
+            }
+
+            function llenar_datos_de_producto()
+            {
+                contador_solicitudes++; 
+              var settings = {
+                 "async": false,
+                 "crossDomain": true,
+                 "url": `${api_url}/productos/get/${$("#id_producto").val()}`, 
+                 "method": "GET",
+                 "headers": {
+                   "Content-Type": "application/json",
+                   "cache-control": "no-cache",
+                   "token": `${Cookies.get('token')}`, 
+                   "id_tipo_de_usuario": `${Cookies.get('id_tipo_de_usuario')}`, 
+                   "id_usuario": `${Cookies.get('id_usuario')}`
+                 },
+                 "processData": false,              
+                  success: function(data){    
+                  ////console.log(data); 
+                  //Parseamos la información. 
+                   var obj = JSON.parse(data);        
+            
+                   //Limpiamos el contenido actual 
+                   $("#tipo_de_producto").html(`<b>Tipo: </b>${obj[0]["tipo_de_producto"]}`);
+                   $("#clasificacion_de_producto").html(`<b>Clasificación: </b>${obj[0]["clasificacion_de_producto"]}`);
+                   
+                 }
+                  , error: function(data) {
+                     //Volvemos a invocar la función. 
+                     if(contador_solicitudes<cantidad_maxima_solicitudes)
+                      llenar_datos_de_producto();              
+                  }
+               }
+            
+               $.ajax(settings);
+            }
+
+            function llenar_combobox_bancos()
+            {
+              contador_solicitudes++; 
+              var settings = {
+                 "async": false,
+                 "crossDomain": true,
+                 "url": `${api_url}/bancos/getForCombobox`, 
+                 "method": "GET",
+                 "headers": {
+                   "Content-Type": "application/json",
+                   "cache-control": "no-cache",
+                   "token": `${Cookies.get('token')}`, 
+                   "id_usuario": `${Cookies.get('id_usuario')}`
+                 },
+                 "processData": false,              
+                  success: function(data){    
+                  ////console.log(data); 
+                  //Parseamos la información. 
+                   var obj = JSON.parse(data);        
+            
+                   //Limpiamos el contenido actual 
+                   $("#id_banco").html("");
+                   var nuevo_contenido = ""; 
+            
+                   //Llenamos las nuevas opciones. 
+                   for (var x =  0; x < obj.length; x++) 
+                   {
+                     var id = obj[x]["id"]; 
+                     var nombre = obj[x]["nombre"];                
+                     nuevo_contenido += `<option value="${id}">${nombre}</option>`; 
+                   }
+            
+                   $("#id_banco").html(nuevo_contenido);   
+                   //Seleccinamos la primera opción
+                   $('#id_banco').selectpicker('val', $("#id_banco option:first").val());
+                   $("#id_banco").selectpicker('refresh'); 
+                 }
+                  , error: function(data) {
+                     //Volvemos a invocar la función. 
+                     if(contador_solicitudes<cantidad_maxima_solicitudes)
+                      llenar_combobox_bancos();              
+                  }
+               }
+            
+               $.ajax(settings);
+            }
+
+            function confirmar_eliminacion(button)
+            {             
+              if(button.dataset.id_registro.toString()!="-1")
+              {
+                $("#button_guardar_cambios").attr("data-id_registro", button.dataset.id_registro);                
+              }
+
+
+              $("#modal_eliminacion").modal("show"); 
+
+            }
+
+            function confirmar_eliminacion_2(button)
+            {             
+              if(button.dataset.id_registro.toString()!="-1")
+              {
+                $("#button_guardar_cambios_2").attr("data-id_registro", button.dataset.id_registro);                
+              }
+
+
+              $("#modal_eliminacion_2").modal("show"); 
+
+            }
+
+            function confirmar_eliminacion_3(button)
+            {             
+              if(button.dataset.id_registro.toString()!="-1")
+              {
+                $("#button_guardar_cambios_3").attr("data-id_registro", button.dataset.id_registro);                
+              }
+
+
+              $("#modal_eliminacion_3").modal("show"); 
+
+            }            
+
+            function eliminar()
+            {
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/pagos/PostDelete/${$("#button_guardar_cambios").attr("data-id_registro")}`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false               
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Registro eliminado");
+               location.reload(true); 
+             });
+            }
+
+            function eliminar_2()
+            {
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/pagos/PostDelete/${$("#button_guardar_cambios_2").attr("data-id_registro")}`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false               
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Registro eliminado");               
+               //Ocultamos el modal actual. 
+               $('#modal_eliminacion_2').modal('hide');
+               $('#modal_2').modal('hide');
+               //Volvemos a mostrar el modal anterior.    
+               $(`#preparar_update_${$("#button_guardar_cambios").attr("data-id_registro")}`).click(); 
+             });
+            }
+
+            function eliminar_3()
+            {
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/facturasProductos/PostDelete/${$("#button_guardar_cambios_3").attr("data-id_registro")}`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false               
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Registro eliminado");               
+               //Ocultamos el modal actual. 
+               $('#modal_eliminacion_3').modal('hide');
+               $('#modal_3').modal('hide');
+               //Volvemos a mostrar el modal anterior.    
+               $(`#preparar_update_${$("#button_guardar_cambios").attr("data-id_registro")}`).click(); 
+             });
+            }            
+
+            function llenar_combobox_clientes()
+            {
+              contador_solicitudes++; 
+              var settings = {
+                 "async": false,
+                 "crossDomain": true,
+                 "url": `${api_url}/clientes/getForCombobox`, 
+                 "method": "GET",
+                 "headers": {
+                   "Content-Type": "application/json",
+                   "cache-control": "no-cache",
+                   "token": `${Cookies.get('token')}`, 
+                   "id_usuario": `${Cookies.get('id_usuario')}`
+                 },
+                 "processData": false,              
+                  success: function(data){    
+                  ////console.log(data); 
+                  //Parseamos la información. 
+                   var obj = JSON.parse(data);        
+            
+                   //Limpiamos el contenido actual 
+                   $("#id_cliente").html("");
+                   var nuevo_contenido = ""; 
+            
+                   //Llenamos las nuevas opciones. 
+                   for (var x =  0; x < obj.length; x++) 
+                   {
+                     var id = obj[x]["id"]; 
+                     var nombre = obj[x]["nombre"];                
+                     nuevo_contenido += `<option value="${id}">${nombre}</option>`; 
+                   }
+            
+                   $("#id_cliente").html(nuevo_contenido);   
+                   //Seleccinamos la primera opción
+                   $('#id_cliente').selectpicker('val', $("#id_cliente option:first").val());
+                   $("#id_cliente").selectpicker('refresh'); 
+                 }
+                  , error: function(data) {
+                     //Volvemos a invocar la función. 
+                     if(contador_solicitudes<cantidad_maxima_solicitudes)
+                      llenar_combobox_clientes();              
+                  }
+               }
+            
+               $.ajax(settings);
+            }
+
+            function llenar_combobox_productos()
+            {
+              contador_solicitudes++; 
+              var settings = {
+                 "async": false,
+                 "crossDomain": true,
+                 "url": `${api_url}/productos/getForCombobox`, 
+                 "method": "GET",
+                 "headers": {
+                   "Content-Type": "application/json",
+                   "cache-control": "no-cache",
+                   "token": `${Cookies.get('token')}`, 
+                   "id_usuario": `${Cookies.get('id_usuario')}`
+                 },
+                 "processData": false,              
+                  success: function(data){    
+                  ////console.log(data); 
+                  //Parseamos la información. 
+                   var obj = JSON.parse(data);        
+            
+                   //Limpiamos el contenido actual 
+                   $("#id_producto").html("");
+                   var nuevo_contenido = ""; 
+            
+                   //Llenamos las nuevas opciones. 
+                   for (var x =  0; x < obj.length; x++) 
+                   {
+                     var id = obj[x]["id"]; 
+                     var nombre = obj[x]["nombre"];                
+                     nuevo_contenido += `<option value="${id}">${nombre}</option>`; 
+                   }
+            
+                   $("#id_producto").html(nuevo_contenido);   
+                   //Seleccinamos la primera opción
+                   $('#id_producto').selectpicker('val', $("#id_producto option:first").val());
+                   $("#id_producto").selectpicker('refresh'); 
+                 }
+                  , error: function(data) {
+                     //Volvemos a invocar la función. 
+                     if(contador_solicitudes<cantidad_maxima_solicitudes)
+                      llenar_combobox_productos();              
+                  }
+               }
+            
+               $.ajax(settings);
+            }
+
+            function llenar_combobox_estados_de_factura()
+            {
+              contador_solicitudes++; 
+              var settings = {
+                 "async": false,
+                 "crossDomain": true,
+                 "url": `${api_url}/estadosDeFactura/getForCombobox`, 
+                 "method": "GET",
+                 "headers": {
+                   "Content-Type": "application/json",
+                   "cache-control": "no-cache",
+                   "token": `${Cookies.get('token')}`, 
+                   "id_usuario": `${Cookies.get('id_usuario')}`
+                 },
+                 "processData": false,              
+                  success: function(data){    
+                  ////console.log(data); 
+                  //Parseamos la información. 
+                   var obj = JSON.parse(data);        
+            
+                   //Limpiamos el contenido actual 
+                   $("#id_estado_de_factura").html("");
+                   var nuevo_contenido = ""; 
+            
+                   //Llenamos las nuevas opciones. 
+                   for (var x =  0; x < obj.length; x++) 
+                   {
+                     var id = obj[x]["id"]; 
+                     var nombre = obj[x]["nombre"];                
+                     nuevo_contenido += `<option value="${id}">${nombre}</option>`; 
+                   }
+            
+                   $("#id_estado_de_factura").html(nuevo_contenido);   
+                   //Seleccinamos la primera opción
+                   $('#id_estado_de_factura').selectpicker('val', $("#id_estado_de_factura option:first").val());
+                   $("#id_estado_de_factura").selectpicker('refresh'); 
+                 }
+                  , error: function(data) {
+                     //Volvemos a invocar la función. 
+                     if(contador_solicitudes<cantidad_maxima_solicitudes)
+                      llenar_combobox_estados_de_factura();              
+                  }
+               }
+            
+               $.ajax(settings);
+            }
+
+            function actualizar_pagina(boton) {
+                pagina_actual = parseInt(boton.dataset.pagina);
+                //Hacemos solicitud a tipos_de_productos/get_by_page/1 En caso de no existir un filtro guardado.
+                llenar_datos();
+
+                //Hacemos solicitud a tipos_de_productos/search/1 En caso de existir un filtro guardado. 
+            }
+
+            function llenar_datos() {
+                var settings = {
+                    "async": false,
+                    "crossDomain": true,
+                    "url": `${api_url}/pagos/getSearchByPageOtrosPagos`,
+                    "method": "GET",
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "cache-control": "no-cache",
+                        "token": `${Cookies.get('token')}`,
+                        "id_usuario": `${Cookies.get('id_usuario')}`,
+                        "id_tipo_de_usuario": `${Cookies.get('id_tipo_de_usuario')}`,
+                        "pagina": `${pagina_actual}`,
+                        "nombre": `${$("#nombre_busqueda").val()}`,
+                        "modo": ""
+                    },
+                    "processData": false,
+                    success: function(data) {
+
+                        //Limpiamos el contenido de las usuarios.
+                        $("#tarjetas").hide("");
+                        $("#tarjetas").html("");
+                        //Parseamos la información. 
+                        var obj = JSON.parse(data);
+
+                        cantidad_elementos_en_pagina = obj.length;
+                        var contenido_append = "";
+
+                        contenido_append += `
+                          <div class="col-12 form-group table-responsive">
+                                  <table class="" style="width: 100%;margin-top: 15px;font-size:20px;">
+                                     <tr class="tr_no_hover" style="border-bottom-left-radius: 40px;">                                        
+                                        <th class="th_left" style="width:30%">Fecha</th>
+                                        <th class="" style="width:20%">Importe</th>                                        
+                                        <th class="" style="width:30%">Banco</th>
+                                        <th class="th_right" style="width: 20%">Acciones</th>                                                                              
+                                     </tr>`
+
+                        //Cambiamos el valor actual del id para preparar el update  
+                        for (var x = 0; x < obj.length; x++) {
+                            //No mostramos el último elemento. (Solo en caso de que este la página llena)
+                            if ((x == obj.length - 1) && (obj.length - 1 == cantidad_elementos_por_pagina))
+                                continue;
+
+                            contenido_append += `
+                          <tr>
+                            <td>${obj[x]["fecha"]}</td>
+                            <td>${obj[x]["importe"]}</td>
+                            <td>${obj[x]["banco"]}</td>                            
+                            <td>                            
+                            <span id="preparar_update_${obj[x]["id"]}" data-id_registro='${obj[x]["id"]}' onclick='preparar_update(this);' class="fa fa-pencil button_icon" style="font-size:35px;margin-right:5px;"></span>
+                            <span data-id_registro='${obj[x]["id"]}' class="fa fa-trash button_icon_red" onclick="confirmar_eliminacion(this);" style="font-size:35px;margin-right:5px;"></span>
+                            </td>
+                         </tr>`;
+                        }
+
+                        //Hacemos el append de los botones. 
+                        contenido_append += `</table>
+                               </div>`;
+
+                        $("#tarjetas").html(contenido_append);
+                        $("#tarjetas").show("slow");
+
+                        llenar_paginacion();                        
+
+                    },
+                    error: function(data) {
+                        alert("No se encontraron resultados");
+                        return;
+                    }
+                }
+
+                $.ajax(settings);
+
+            }
+
+            function preparar_insert()
+            {
+                limpiar_modal(); 
+                $("#button_guardar_cambios").attr("data-id_registro", "-1");
+                $("#button_guardar_cambios").attr("data-modo", "insert");
+
+                //Ocultamos el div de la foto. 
+                $("#modal_izquierdo").removeClass("col-12 col-lg-8"); 
+                $("#modal_derecho").removeClass("col-12 col-lg-4"); 
+
+                $("#modal_izquierdo").addClass("col-12"); 
+                $("#modal_derecho").addClass("col-12"); 
+
+                $("#modal_derecho").hide(); 
+                $("#div_eliminacion").hide(); 
+                
+
+
+                //Mostramos el modal
+                $("#modal").modal("show");
+            }
+
+            function preparar_insert_2()
+            {
+                limpiar_modal_2(); 
+                $("#button_guardar_cambios_2").attr("data-id_registro", "-1");
+                $("#button_guardar_cambios_2").attr("data-modo", "insert");
+
+                //Ocultamos el div de la foto. 
+                $("#modal_izquierdo_2").removeClass("col-12 col-lg-8"); 
+                $("#modal_derecho_2").removeClass("col-12 col-lg-4"); 
+
+                $("#modal_izquierdo_2").addClass("col-12"); 
+                $("#modal_derecho_2").addClass("col-12"); 
+
+                $("#modal_derecho_2").hide(); 
+                $("#div_eliminacion_2").hide(); 
+                
+
+
+                //Mostramos el modal
+                $("#modal_2").modal("show");
+            }
+
+            function preparar_insert_3()
+            {
+                limpiar_modal_3(); 
+                $("#button_guardar_cambios_3").attr("data-id_registro", "-1");
+                $("#button_guardar_cambios_3").attr("data-modo", "insert");
+
+                //Ocultamos el div de la foto. 
+                $("#modal_izquierdo_3").removeClass("col-12 col-lg-8"); 
+                $("#modal_derecho_3").removeClass("col-12 col-lg-4"); 
+
+                $("#modal_izquierdo_3").addClass("col-12"); 
+                $("#modal_derecho_3").addClass("col-12"); 
+
+                $("#modal_derecho_3").hide(); 
+                $("#div_eliminacion_3").hide(); 
+                
+
+
+                //Mostramos el modal
+                $("#modal_3").modal("show");
+            }            
+
+            function limpiar_modal()
+            {
+                    $("#folio").val(""); 
+                                        
+                    $('#id_banco').selectpicker('val', $("#id_banco option:first").val());
+                    $("#id_banco").selectpicker('refresh'); 
+
+                    $("#importe").val(""); 
+                    poner_fecha_de_hoy("fecha"); 
+
+
+                    $("#errores").hide();
+
+                    //Actualizamos la fotografía.                     
+                    $("#foto_url").attr('src', `${default_image_url}`);
+                    $("#foto_url").attr('onerror', `this.src='${default_image_url}';`);                 
+            }
+
+            function limpiar_modal_2()
+            {
+                    $("#folio").val(""); 
+                                        
+                    $('#id_banco').selectpicker('val', $("#id_banco option:first").val());
+                    $("#id_banco").selectpicker('refresh'); 
+
+                    $("#importe_pago").val(""); 
+                    poner_fecha_de_hoy("fecha_pago"); 
+
+                    $("#errores_2").hide();
+                    
+            }    
+
+            function limpiar_modal_3()
+            {
+                    
+                $('#id_producto').selectpicker('val', $("#id_producto option:first").val());
+                $("#id_producto").selectpicker('refresh'); 
+
+                $("#errores_3").hide();
+                    
+            }                      
+
+            function preparar_update(button) {
+                //Llenamos el modal con los datos del usuario
+                $("#div_eliminacion").show();
+                llenar_modal(button.dataset.id_registro); 
+
+                //Cambiamos el id_usuario y el modo del botón de guardar cambios
+                $("#button_guardar_cambios").attr("data-id_registro", button.dataset.id_registro);
+                $("#button_guardar_cambios").attr("data-modo", "update");
+
+                //Hacemos que el formulario abarque toda la pantalla (Sin la foto)
+                /*$("#modal_izquierdo").removeClass("col-12"); 
+                $("#modal_derecho").removeClass("col-12"); 
+
+                $("#modal_izquierdo").addClass("col-12 col-lg-8"); 
+                $("#modal_derecho").addClass("col-12 col-lg-4"); 
+
+                $("#modal_derecho").show(); */
+
+        $("#modal_izquierdo").removeClass("col-12 col-lg-8"); 
+                $("#modal_derecho").removeClass("col-12 col-lg-4"); 
+
+                $("#modal_izquierdo").addClass("col-12"); 
+                $("#modal_derecho").addClass("col-12"); 
+
+                $("#modal_derecho").hide();                 
+
+                //Mostramos el modal
+                $("#modal").modal("show");
+
+            }
+
+            function preparar_update_2(button) {
+                //Llenamos el modal con los datos del usuario
+                $("#div_eliminacion_2").show();                
+                contador_solicitudes_modals =  0; 
+                llenar_modal_2(button.dataset.id_registro); 
+
+                //Cambiamos el id_usuario y el modo del botón de guardar cambios
+                $("#button_guardar_cambios_2").attr("data-id_registro", button.dataset.id_registro);
+                $("#button_guardar_cambios_2").attr("data-modo", "update");
+
+                //Hacemos que el formulario abarque toda la pantalla (Sin la foto)
+                /*$("#modal_izquierdo").removeClass("col-12"); 
+                $("#modal_derecho").removeClass("col-12"); 
+
+                $("#modal_izquierdo").addClass("col-12 col-lg-8"); 
+                $("#modal_derecho").addClass("col-12 col-lg-4"); 
+
+                $("#modal_derecho").show(); */
+
+                $("#modal_izquierdo_2").removeClass("col-12 col-lg-8"); 
+                $("#modal_derecho_2").removeClass("col-12 col-lg-4"); 
+
+                $("#modal_izquierdo_2").addClass("col-12"); 
+                $("#modal_derecho_2").addClass("col-12"); 
+
+                $("#modal_derecho_2").hide();                 
+
+                //Mostramos el modal
+                $("#modal_2").modal("show");
+
+            }          
+
+            function preparar_update_3(button) {
+                //Llenamos el modal con los datos del usuario
+                $("#div_eliminacion_3").show();                
+                contador_solicitudes_modals =  0; 
+                llenar_modal_3(button.dataset.id_registro); 
+
+                //Cambiamos el id_usuario y el modo del botón de guardar cambios
+                $("#button_guardar_cambios_3").attr("data-id_registro", button.dataset.id_registro);
+                $("#button_guardar_cambios_3").attr("data-modo", "update");
+
+                //Hacemos que el formulario abarque toda la pantalla (Sin la foto)
+                /*$("#modal_izquierdo").removeClass("col-12"); 
+                $("#modal_derecho").removeClass("col-12"); 
+
+                $("#modal_izquierdo").addClass("col-12 col-lg-8"); 
+                $("#modal_derecho").addClass("col-12 col-lg-4"); 
+
+                $("#modal_derecho").show(); */
+
+                $("#modal_izquierdo_3").removeClass("col-12 col-lg-8"); 
+                $("#modal_derecho_3").removeClass("col-12 col-lg-4"); 
+
+                $("#modal_izquierdo_3").addClass("col-12"); 
+                $("#modal_derecho_3").addClass("col-12"); 
+
+                $("#modal_derecho_3").hide();                 
+
+                //Mostramos el modal
+                $("#modal_3").modal("show");
+
+            }              
+
+            function guardar_cambios(button)
+            {              
+              //Invocamos la función de validación. 
+              if(validacion()==false)
+                return; 
+              if(button.dataset.modo.toString()=="update")
+              {
+                update();                
+              }
+              else
+              {
+                insert(); 
+              }
+            }
+
+            function guardar_cambios_2(button)
+            {              
+              //Invocamos la función de validación. 
+              if(validacion_2()==false)
+                return; 
+              if(button.dataset.modo.toString()=="update")
+              {
+                update_2();                
+              }
+              else
+              {
+                insert_2(); 
+              }
+            }        
+
+            function guardar_cambios_3(button)
+            {              
+              //Invocamos la función de validación. 
+              if(validacion_3()==false)
+                return; 
+              if(button.dataset.modo.toString()=="update")
+              {
+                update_3();
+              }
+              else
+              {
+                insert_3();
+              }
+            }                  
+
+            function update()
+            {
+                var registro={};
+
+                registro.fecha = $("#fecha").val();                
+                registro.id_banco = $("#id_banco").val();                
+                registro.importe = $("#importe").val();
+
+
+                console.log(registro);
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/pagos/POST/${$("#button_guardar_cambios").attr("data-id_registro")}`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false,
+               "data": JSON.stringify(registro)
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Cambios guardados");
+               location.reload(true); 
+             });
+            }
+
+            function update_2()
+            {
+                var registro={};
+
+                registro.importe = $("#importe_pago").val();
+                registro.fecha = $("#fecha_pago").val();
+                registro.id_banco = $("#id_banco").val();
+
+
+                console.log(registro);
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/pagos/POST/${$("#button_guardar_cambios_2").attr("data-id_registro")}`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false,
+               "data": JSON.stringify(registro)
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Cambios guardados");
+               //Ocultamos el modal actual. 
+               $('#modal_2').modal('hide');
+               //Volvemos a mostrar el modal anterior.                
+               $(`#preparar_update_${$("#button_guardar_cambios").attr("data-id_registro")}`).click(); 
+               
+             });
+            }
+
+            function update_3()
+            {
+                var registro={};
+
+                registro.cantidad = $("#cantidad").val();
+                registro.id_producto = $("#id_producto").val();
+
+                console.log(registro);
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/facturasProductos/POST/${$("#button_guardar_cambios_3").attr("data-id_registro")}`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false,
+               "data": JSON.stringify(registro)
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Cambios guardados");
+               //Ocultamos el modal actual. 
+               $('#modal_3').modal('hide');
+               //Volvemos a mostrar el modal anterior.                
+               $(`#preparar_update_${$("#button_guardar_cambios").attr("data-id_registro")}`).click(); 
+               
+             });
+            }                       
+
+            function insert()
+            {
+              var registro={};
+
+                registro.fecha = $("#fecha").val();                
+                registro.id_banco = $("#id_banco").val();                
+                registro.importe = $("#importe").val();                
+                registro.id_factura = "-1"; 
+
+                console.log(registro);
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/pagos/Post/`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false,
+               "data": JSON.stringify(registro)
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Cambios guardados");
+               location.reload(true); 
+             });
+
+            }
+
+            function insert_2()
+            {
+              var registro={};
+
+                registro.fecha = $("#fecha_pago").val();
+                registro.importe = $("#importe_pago").val();
+                registro.id_banco = $("#id_banco").val();   
+                //Se pone el valor de button_guardar_cambios porque ahí se encuentra guardado el id de la factura.              
+                registro.id_factura = $("#button_guardar_cambios").attr("data-id_registro");
+
+                console.log(registro);
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/pagos/Post/`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false,
+               "data": JSON.stringify(registro)
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Cambios guardados");
+               $('#modal_2').modal('hide');
+               //Volvemos a mostrar el modal anterior.                
+               $(`#preparar_update_${$("#button_guardar_cambios").attr("data-id_registro")}`).click();                
+             });
+
+            }            
+
+            function insert_3()
+            {
+                var registro={};
+
+                registro.id_producto = $("#id_producto").val();
+                registro.cantidad = $("#cantidad").val();
+                //Se pone el valor de button_guardar_cambios porque ahí se encuentra guardado el id de la factura.             
+                registro.id_factura = $("#button_guardar_cambios").attr("data-id_registro");
+                
+                console.log(registro);
+
+                var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/facturasProductos/Post/`, 
+                "method": "POST",
+                "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache",
+                "token": `${Cookies.get('token')}`, 
+                "id_usuario": `${Cookies.get('id_usuario')}`
+               },
+               "processData": false,
+               "data": JSON.stringify(registro)
+             }
+             $.ajax(settings).done(function (response) {
+               //Actualizamos el elemento de la raza en la interfaz.           
+               alert("Cambios guardados");
+               $('#modal_3').modal('hide');
+               //Volvemos a mostrar el modal anterior.                
+               $(`#preparar_update_${$("#button_guardar_cambios").attr("data-id_registro")}`).click();                
+             });
+
+            }                
+
+            function validacion()
+            {
+              if($("#fecha").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique una fecha.");
+                return false; 
+              }             
+                
+                if($("#id_banco").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique un banco.");
+                return false; 
+              }              
+                
+                if($("#importe").val().trim()==="") 
+              {
+                mostrar_errores("errores", "Por favor, especifique un importe.");
+                return false; 
+              } 
+
+              return true;
+
+            }
+
+            function validacion_2()
+            {
+              if($("#fecha_pago").val().trim()==="") 
+              {
+                mostrar_errores("errores_2", "Por favor, especifique una fecha.");
+                return false; 
+              }
+              if($("#importe_pago").val().trim()==="") 
+              {
+                mostrar_errores("errores_2", "Por favor, especifique un importe.");
+                return false; 
+              }
+
+              if($("#id_banco").val().trim()==="") 
+              {
+                mostrar_errores("errores_2", "Por favor, especifique un banco.");
+                return false; 
+              }   
+
+              return true;
+
+            } 
+
+            function validacion_3()
+            {
+
+              if($("#id_producto").val().trim()==="") 
+              {
+                mostrar_errores("errores_3", "Por favor, especifique un producto.");
+                return false; 
+              }   
+
+              if($("#cantidad").val().trim()==="") 
+              {
+                mostrar_errores("errores_3", "Por favor, especifique una cantidad.");
+                return false; 
+              }   
+
+              
+
+              return true;
+            }                        
+
+            function llenar_modal(id_registro)
+            {
+              llenar_modal_general(id_registro); 
+
+            }
+         
+
+            function llenar_modal_general(id_registro)
+            {
+              $("#errores").hide();
+
+            contador_solicitudes_modals++;
+            
+            var id = id_registro;
+
+            var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": `${api_url}/pagos/get/${id}`,
+                "method": "GET",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "cache-control": "no-cache",
+                    "token": `${Cookies.get('token')}`,
+                    "id_usuario": `${Cookies.get('id_usuario')}`,
+                    "id_tipo_de_usuario": `${Cookies.get('id_tipo_de_usuario')}`
+                },
+                "processData": false,
+                success: function(data) {
+                    if (data == "incorrecto") {
+                        //mandar_a_perfil(); 
+                        return;
+                    }
+                    console.log(data);
+                 
+
+                    //Parseamos la información. 
+                    var obj = JSON.parse(data);
+
+                    //Fijamos el nombre de la raza. 
+
+                    $("#fecha").val(obj[0]["fecha"]);                    
+                    $("#importe").val(obj[0]["importe"]);                    
+                    
+
+                    //Actualizamos la fotografía.                     
+                    if(String($(`#id_banco option[value=${obj[0]["id_banco"]}]`).val())
+                    !==String(obj[0]["id_banco"]))
+                   {                    
+                    $("#id_banco").append(`<option value="${obj[0]["id_banco"]}">${obj[0]["banco"]}</option>`);
+                   }
+
+                   //Seleccionamos el valor.                    
+                    $('#id_banco').selectpicker('val', obj[0]["id_banco"]);
+                    $("#id_banco").selectpicker('refresh'); 
+
+                    /*
+                    if(String($(`#id_producto option[value=${obj[0]["id_producto"]}]`).val())
+                    !==String(obj[0]["id_producto"]))
+                   {                    
+                    $("#id_producto").append(`<option value="${obj[0]["id_producto"]}">${obj[0]["id_producto"]}</option>`);
+                   }
+
+                   //Seleccionamos el valor.                    
+                    $('#id_producto').selectpicker('val', obj[0]["id_producto"]);
+                    $("#id_producto").selectpicker('refresh'); */
+
+                },
+                error: function() {
+                    //Volvemos a invocar la función. 
+                    if (contador_solicitudes_modals < cantidad_maxima_solicitudes)
+                        llenar_modal_general(id_registro);
+                }
+            }
+
+            $.ajax(settings);
+            }
+
+            function configurar_eventos_de_busqueda() {
+                $("#nombre_busqueda").keydown(function(e) {
+                    if (e.keyCode == 13) {
+                        pagina_actual = 1;
+                        llenar_datos();
+                    }
+                });
+            }
+        </script>
+    </body>
+
+</html>
